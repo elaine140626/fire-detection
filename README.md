@@ -6,8 +6,7 @@
 
 ## login
 
-![设计图](http://github.com/xwxztq/fire-
-detection/raw/master/pic/login.jpg)
+![设计图](https://raw.githubusercontent.com/xwxztq/fire-detection/master/pic/login.jpg)
 
 login是登陆页面
 
@@ -22,7 +21,7 @@ login是登陆页面
 
 ## overview
 
-![设计图](http://github.com/xwxztq/fire-detection/raw/master/pic/overview.jpg)
+![设计图](https://raw.githubusercontent.com/xwxztq/fire-detection/master/pic/overview.jpg)
 
 这里是系统的一个总览部分，需要完成的功能点比较多。但目前有一些主要是假功能点，所以工程量尚可
 
@@ -49,7 +48,7 @@ login是登陆页面
 
 **设计图**
 
-![pic](http://github.com/xwxztq/fire-detection/raw/master/pic/monitor.jpg)
+![pic](https://raw.githubusercontent.com/xwxztq/fire-detection/master/pic/monitor.jpg)
 
 ### TODO
 
@@ -65,7 +64,7 @@ login是登陆页面
 [报警页面](http://188.131.241.21/warning.html)
 
 **设计图**
-![pic](http://github.com/xwxztq/fire-detection/raw/master/pic/warning.jpg)
+![pic](https://raw.githubusercontent.com/xwxztq/fire-detection/master/pic/warning.jpg)
 
 ### TODO
 
