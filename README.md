@@ -6,7 +6,7 @@
 
 ## login
 
-![设计图](https://raw.githubusercontent.com/xwxztq/fire-detection/master/pic/login.jpg)
+![设计图](https://github.com/xwxztq/fire-detection/blob/master/pic/login.jpg)
 
 login是登陆页面
 
