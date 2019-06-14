@@ -1,0 +1,14 @@
+from django.contrib.auth.models import User #引入管理员密码存放的数据库
+
+user=User.objects.filter() #查找该数据库里有哪些用户
+
+user 
+
+输出user 可以看到用户名，我这里只有一个admin
+
+[<User: admin>]
+user = User.objects.get(username='admin') #获取名称为admin的用户
+
+user.set_password('123456') #设置密码
+
+user.save()  # 报错user对象
