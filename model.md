@@ -30,7 +30,7 @@
 * content (告警内容）
 * img_url
 * c_time(该条信息的生成时间，用户排序）
-* serial_number (表示告警设备的序列号）
+* serial_number (foreign_key 表示告警设备的序列号）
 
 
 ## user_message
@@ -38,8 +38,8 @@
 这个表储存的是用户处理过的信息，因为需要标识每个用户对于哪些信息还没有处理，所以反向标记一下处理的...
 
 * id (primary_key)
-* user_id
-* message_id
+* user_id (foreign_key)
+* message_id (foreign_key)
 * true_or_false (这个value 用来标识这条告警信息是否正确）
 
 

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'login',
 ]
 
 MIDDLEWARE = [
@@ -73,15 +74,22 @@ WSGI_APPLICATION = 'fire.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = { 'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'hanhan',        #数据库名字
-    'USER': 'root',          #账号
-    'PASSWORD': 'San1226',      #密码
-    'HOST': '127.0.0.1',    #IP
-    'PORT': '3306',         #端口
+# DATABASES = { 'default': {
+#     'ENGINE': 'django.db.backends.mysql',
+#     'NAME': 'hanhan',        #数据库名字
+#     'USER': 'root',          #账号
+#     'PASSWORD': 'San1226',      #密码
+#     'HOST': '127.0.0.1',    #IP
+#     'PORT': '3306',         #端口
+#     }
+# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
