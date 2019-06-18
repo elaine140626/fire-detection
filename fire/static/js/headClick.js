@@ -1,34 +1,19 @@
 "use strict";
 
 function toOverview() {
-    let curHref = window.location.href.split('/');
-    let strLength = window.location.href.length;
-
-    window.location.href = window.location.href.substr(0,strLength-curHref[curHref.length-1].length) + "overview.html";
+    window.location.href = "/overview/";
 }
 function toMonitor() {
-    let curHref = window.location.href.split('/');
-    let strLength = window.location.href.length;
-
-    window.location.href = window.location.href.substr(0,strLength-curHref[curHref.length-1].length) + "monitor.html";
+    window.location.href = "/monitor/";
 }
 
 function toLogin() {
-    let curHref = window.location.href.split('/');
-    let strLength = window.location.href.length;
-
-    window.location.href = window.location.href.substr(0,strLength-curHref[curHref.length-1].length) + "monitor.html";
+    window.location.href = "/login/"
 }
 function toConf() {
-    let curHref = window.location.href.split('/');
-    let strLength = window.location.href.length;
-
-    window.location.href = window.location.href.substr(0,strLength-curHref[curHref.length-1].length) + "conf.html";
+    window.location.href = "/conf/"
 }
 
 function toWarning() {
-    let curHref = window.location.href.split('/');
-    let strLength = window.location.href.length;
-
-    window.location.href = window.location.href.substr(0,strLength-curHref[curHref.length-1].length) + "warning.html";
+    window.location.href = '/warning/'
 }

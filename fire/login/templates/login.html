@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title%}登陆{% endblock %}
+
+{% block main_body %}
+<div class="login-body">
+    <div class="login-box">
+        <p>iLearn</p>
+        <p class="smaller-para">智能烟火检测系统</p>
+        <form action="/login/" method="post">
+            {%  csrf_token %}
+            <div class="inputBox">
+                {{ login_form.username }}
+                {{ login_form.username.label_tag }}
+            </div>
+            <div class="inputBox">
+                {{ login_form.password }}
+                {{ login_form.password.label_tag }}
+            </div>
+            <div class="login-button-container">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{#    <script src=" {% static 'js/login.js' %}"></script>#}
+{% endblock %}

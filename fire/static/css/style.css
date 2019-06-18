@@ -69,14 +69,14 @@ div {
 .head-bar{
     height: 75px;
     display: grid;
-    grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     margin: 0;
     -webkit-border-radius: 0 0 5px 5px;
     -moz-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
     background: rgba(36, 36, 36, 0.2);
 }
-.btn{
+.head-bar .btn{
     max-width: 140px;
     border: 0;
     display: flex;
@@ -84,7 +84,7 @@ div {
     align-items: center;
 
 }
-.btn button{
+.head-bar .btn button, .head-bar a{
     height: 50px;
     width: 80%;
     font-size: 15px;
@@ -95,7 +95,7 @@ div {
     border: 0 solid gray;
     transition-duration: 200ms;
 }
-.btn button:hover{
+.head-bar .btn button:hover , .head-bar a:hover{
     color: #000;
     font-size: 17px;
     font-weight: lighter;
@@ -106,13 +106,30 @@ div {
     opacity: 0.3;
 }
 .head-title{
+    min-width: 500px;
     display: block;
     text-align: center;
     font-size: 35px;
     padding: 7px;
     color: #f3f3f3;
-    font-family: "Open Sans", sans-serif;
+    /*font-family: , sans-serif;*/
 }
+.head-bar .session-state{
+    /*display: grid;*/
+    /*grid-template-columns: 1fr 1fr;*/
+    /*min-width: 70px;*/
+}
+.head-bar a{
+    min-width: 30px;
+    font-size: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .overview-content{
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
@@ -159,8 +176,6 @@ div {
 .login-body{
     padding: 0;
     margin: 0;
-    height: 100vh;
-    width: 100vw;
     display: flex;
 
 
@@ -187,9 +202,13 @@ div {
 }
 .login-box{
     display: block;
+    /*justify-content: center;;*/
+    /*align-items: center;*/
     width: 25%;
-    padding: 50px;
-    background: rgba(0, 0, 0,.5);
+    /*min-height: 500px;*/
+    /*height: 30%;*/
+    padding: 70px 50px 70px 50px;
+    background: rgba(0, 0, 0,.3);
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -199,14 +218,14 @@ div {
 }
 
 .login-box p{
-    margin: 5px;
+    margin: 7px;
     padding: 0;
     color: #f3f3f3;
     text-align: center;
-    font-size: 2rem;
+    font-size: 35px;
 }
 .login-box .smaller-para{
-    font-size: 1rem;
+    font-size: 20px;
 }
 
 .login-box .inputBox{
@@ -214,7 +233,7 @@ div {
 }
 .login-box .inputBox input{
     width: 100%;
-    padding: 10px 0;
+    padding: 15px 0;
     font-size: 1.5rem;
     letter-spacing: 1px;
     color: #f3f3f3;
@@ -232,7 +251,7 @@ div {
     padding: 10px 0;
     font-size: 1.5rem;
     letter-spacing: 1px;
-    color: #f3f3f3;
+    color: #03a9f4;
     pointer-events: none;
     -webkit-transition: .5s ;
     -moz-transition: .5s ;
@@ -257,6 +276,7 @@ div {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+    font-size: 15px;
 }
 
 

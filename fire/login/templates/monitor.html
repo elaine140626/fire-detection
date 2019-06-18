@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{%  extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title%}监控可视化{% endblock %}
+
+{% block main_body %}
+    <div class="monitor-content">
+        <div class="monitor-amount">
+            <div>
+                <div>设备列表</div>
+            </div>
+        </div>
+        <div class="monitor-live">
+            <div class="title">
+                监控直播
+            </div>
+            <div class="monitor-container">
+                <div id="monitor-live-main" class="monitor-live-main">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {#    <script src=" {% static 'js/login.js' %}"></script>#}
+{% endblock %}
