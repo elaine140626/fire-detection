@@ -26,7 +26,9 @@ SECRET_KEY = 'ig-kbh#bi=v(73nnnvo+**&fv1at)gknf=ks3a_mpus)viebwc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [188.131.241.21]
+ALLOWED_HOSTS = [
+	“188.131.241.21”
+	]
 
 
 # Application definition
