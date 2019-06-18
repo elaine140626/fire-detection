@@ -1,0 +1,412 @@
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#popup{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+    z-index: 999;
+}
+#popup .bg{
+    background: rgba(0,0,0,.5);
+    width: 100%;
+    height: 100%;
+}
+#popup img{
+    margin-top: 2%;
+    height: 90%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+}
+div {
+    /*border: 1px solid black;*/
+    margin: 3px;
+}
+.all-divs{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    /*background: rgba(178,187,190,0.7);*/
+
+}
+.all-divs::after{
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    position: fixed;
+    z-index: -999;
+    height: 100vh;
+    width: 100%;
+    background-image: url(../img/altitude-clouds-cold-933054-small.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    filter:blur(1px);
+}
+
+/*---------------------- overview -----*/
+.head-bar{
+    height: 75px;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr 1fr 1fr;
+    margin: 0;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+    background: rgba(36, 36, 36, 0.2);
+}
+.btn{
+    max-width: 140px;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.btn button{
+    height: 50px;
+    width: 80%;
+    font-size: 15px;
+    min-width: 100px;
+    font-weight: bold;
+    color: #f3f3f3;
+    background: none;
+    border: 0 solid gray;
+    transition-duration: 200ms;
+}
+.btn button:hover{
+    color: #000;
+    font-size: 17px;
+    font-weight: lighter;
+    border-width: 0 0 1px 0;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, .3) ;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    opacity: 0.3;
+}
+.head-title{
+    display: block;
+    text-align: center;
+    font-size: 35px;
+    padding: 7px;
+    color: #f3f3f3;
+    font-family: "Open Sans", sans-serif;
+}
+.overview-content{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.overview-left{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.overview-middle{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.overview-middle-bottom{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.overview-right{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+
+.charts-father{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.charts{
+    min-height: 400px;
+    height: 90%;
+    width: 90%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.3);
+
+    overflow: auto;
+    /*background: rgba(0, 0, 0, 0.2);*/
+}
+
+/*-----------------login ---------------*/
+
+.login-body{
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+
+
+    justify-content: center;
+    align-items: center;
+    /*background: rgba(178,187,190,0.7);*/
+
+}
+.login-body::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0;
+    z-index: -999;
+    height: 100vh;
+    width: 100%;
+    background-image: url(../img/altitude-clouds-cold-933054-small.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    filter:blur(1px);
+}
+.login-box{
+    display: block;
+    width: 25%;
+    padding: 50px;
+    background: rgba(0, 0, 0,.5);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.login-box p{
+    margin: 5px;
+    padding: 0;
+    color: #f3f3f3;
+    text-align: center;
+    font-size: 2rem;
+}
+.login-box .smaller-para{
+    font-size: 1rem;
+}
+
+.login-box .inputBox{
+    position: relative;
+}
+.login-box .inputBox input{
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #f3f3f3;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #f3f3f3;
+    outline: none;
+    background: transparent;
+}
+
+.login-box .inputBox label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #f3f3f3;
+    pointer-events: none;
+    -webkit-transition: .5s ;
+    -moz-transition: .5s ;
+    transition: .5s ;
+}
+
+.login-box .inputBox input:focus ~ label,
+.login-box .inputBox input:valid ~ label{
+    top: -18px;
+    left: 0;
+    color: #03a9f4;
+    font-size: 1rem;
+}
+.login-box input[type='submit']
+{
+    border: none;
+    outline: none;
+    color: #f3f3f3;
+    background: #03a9f4;
+    padding: 10px 20px;
+    cursor: pointer;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+
+.login-button-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/*----------- monitor -----------*/
+
+.monitor-content{
+    display: grid;
+    grid-template-columns: 1fr 6fr;
+    overflow: hidden;
+}
+
+.monitor-amount{
+
+    /*background: rgba(0, 0, 0, .2);*/
+}
+.monitor-amount > div {
+    background: rgba(0, 0, 0, .5);
+    /*background: rgba(255, 255, 255, .2);*/
+    width: 100%;
+    min-height: 500px ;
+    -webkit-border-radius: 0 10px 10px 10px;
+    -moz-border-radius: 0 10px 10px 10px;
+    border-radius: 0 10px 10px 10px;
+}
+.monitor-amount > div  > div {
+    margin: 0;
+    font-size: 1.2rem;
+    -webkit-border-radius: 0 0 5px 0;
+    -moz-border-radius: 0 0 5px 0;
+    border-radius: 0 0 5px 0;
+    background: rgba(255, 255, 255, .3);
+    width: 90px;
+    pointer-events: none;
+    color: #090909;
+}
+
+.monitor-live {
+    display: grid;
+    max-height: 100%;
+    grid-template-rows: auto 1fr;
+    margin: 6px 30px 30px 30px;
+    /*background: rgba(255, 255, 255, .3);*/
+    background: rgba(0, 0, 0, .5);
+    -webkit-border-radius: 0 10px 10px 10px;
+    -moz-border-radius: 0 10px 10px 10px;
+    border-radius: 0 10px 10px 10px;
+    overflow: hidden;
+}
+.monitor-live .title{
+    margin: 0;
+    font-size: 1.2rem;
+    -webkit-border-radius: 0 0 5px 0;
+    -moz-border-radius: 0 0 5px 0;
+    border-radius: 0 0 5px 0;
+    background: rgba(255, 255, 255, .3);
+    width: 90px;
+    pointer-events: none;
+    color: #090909;
+}
+
+.monitor-container{
+    overflow: hidden;
+}
+.monitor-live-main{
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.monitor-live-main div{
+    /*background: rgba(255, 255, 255, .4);*/
+    background: rgba(0, 0, 0);
+}
+/*.monitor-amount:before{*/
+/*content: '';*/
+/*position: absolute;*/
+/*top: -2px;*/
+/*left: -2px;*/
+/*right: -2px;*/
+/*bottom: -2px;*/
+/*background: ;*/
+/*z-index: -1;*/
+
+/*.monitor-amount:before{*/
+    /*content: '';*/
+    /*position: absolute;*/
+    /*top: -2px;*/
+    /*left: -2px;*/
+    /*right: -2px;*/
+    /*bottom: -2px;*/
+    /*background: ;*/
+    /*z-index: -1;*/
+
+
+
+/*----------------------  warning ------------*/
+
+
+.warning-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px;
+    background: rgba(255, 255, 255, .2);
+}
+.warning-content{
+    width: 95%;
+    height: 95%;
+    /*background: rgba(255, 255, 255, .2);*/
+}
+
+table{
+    width:100%;
+    table-layout: fixed;
+}
+.tbl-header{
+    background-color: rgba(255,255,255,0.3);
+}
+.tbl-content{
+    height: 500px;
+    overflow-x:auto;
+    margin-top: 0;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 18px;
+    color: #fff;
+    text-transform: uppercase;
+}
+td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 18px;
+    color: #fff;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+td img{
+    width: 200px;
+}
