@@ -27,7 +27,7 @@ SECRET_KEY = 'ig-kbh#bi=v(73nnnvo+**&fv1at)gknf=ks3a_mpus)viebwc'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	“188.131.241.21”
+	"188.131.241.21"
 	]
 
 
