@@ -8,8 +8,13 @@ from django.shortcuts import render,redirect
 
 
 def warning(request):
-    pass
-    return render(request, 'warning.html')
+
+    ret_vars = {}
+
+    if request.session.get('is_login', None):
+        ret_vars['username']=request.session['user_name']
+
+    return render(request, 'warning.html', ret_vars)
 
 def overview(request):
 
@@ -22,7 +27,12 @@ def overview(request):
 
 def monitor(request):
 
-    return render(request, 'monitor.html')
+    ret_vars = {}
+
+    if request.session.get('is_login', None):
+        ret_vars['username']=request.session['user_name']
+
+    return render(request, 'monitor.html', ret_vars)
 
 def login(request):
 
@@ -61,3 +71,5 @@ def login(request):
                 return render(request, 'login.html', ret_var)
 
     return render(request, 'login.html', ret_var)
+
+
