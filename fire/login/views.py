@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from . import models
 from .forms import UserForm
+from django.core import serializers
+import json
 
 # Create your views here.
 
@@ -14,7 +16,9 @@ def warning(request):
     if request.session.get('is_login', None):
         ret_vars['username']=request.session['user_name']
 
-    return render(request, 'warning.html', ret_vars)
+        return render(request, 'warning.html', ret_vars)
+
+    return redirect('/login')
 
 def overview(request):
 
@@ -23,7 +27,9 @@ def overview(request):
     if request.session.get('is_login', None):
         ret_vars['username']=request.session['user_name']
 
-    return render(request, 'overview.html', ret_vars)
+        return render(request, 'overview.html', ret_vars)
+
+    return redirect('/login')
 
 def monitor(request):
 
@@ -31,8 +37,14 @@ def monitor(request):
 
     if request.session.get('is_login', None):
         ret_vars['username']=request.session['user_name']
+        user = models.User.objects.get(name=request.session['user_name'])
+        video_list = models.Video.objects.filter(user_id= user.id)
+        ret_vars['video_list'] = serializers.serialize('json', video_list)
+        ret_vars['default_layout'] = user.layout
 
-    return render(request, 'monitor.html', ret_vars)
+        return render(request, 'monitor.html', ret_vars)
+
+    return redirect('/login')
 
 def login(request):
 
@@ -72,4 +84,5 @@ def login(request):
 
     return render(request, 'login.html', ret_var)
 
-
+def empty_redirect(request):
+    return redirect('/overview/')

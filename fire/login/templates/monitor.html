@@ -17,31 +17,18 @@
             </div>
             <div class="tbl-content">
                 <table cellpadding="0" cellspacing="0" border="0">
-                    <tbody>
-                    <tr>
-                        <td>设备1</td>
-                    </tr>
+                    <tbody id="monitor-left">
                     </tbody>
                 </table>
 
             </div>
         </div>
         <div class="monitor-live">
-            <div class="title">
+            <div class="tab-title">
                 监控直播
             </div>
             <div class="monitor-container">
                 <div id="monitor-live-main" class="monitor-live-main">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
                 </div>
 
             </div>
@@ -51,4 +38,59 @@
 
 {% block script %}
     {#    <script src=" {% static 'js/login.js' %}"></script>#}
+    <script src="{% static 'js/ezuikit.js'%} "></script>
+
+    <script>
+        var videoList = {{ video_list|safe }} ;
+        var defaultLayout = {{ default_layout }};
+
+
+
+        var theWidth, theHeight;
+
+         function calcLayout() {
+            let divWidth = document.getElementById('monitor-live-main');
+            theWidth = ( divWidth.clientWidth - (defaultLayout+1)*30 )/defaultLayout;
+            theHeight = theWidth *0.82+60;
+        }
+
+        calcLayout();
+
+        var mLeft = document.getElementById('monitor-left'),
+            mMain = document.getElementById('monitor-live-main');
+
+        for(i=0;i<videoList.length;i++){
+            let theTh = document.createElement('tr');
+            let theTr = document.createElement('td');
+            theTr.innerText = '设备' + videoList[i].pk;
+            theTh.id = 'monitor' + videoList[i].pk;
+            theTh.appendChild(theTr);
+            mLeft.appendChild(theTh);
+
+            let theVideo = document.createElement('video'),
+                theSource = document.createElement('source');
+
+
+            theVideo.id = 'myPlayer'+videoList[i].pk;
+            theVideo.style.width = theWidth;
+            theVideo.style.height = theHeight;
+            theVideo.setAttribute('width', theWidth);
+            theVideo.setAttribute('height', theHeight);
+            theVideo.setAttribute('autoplay','');
+            theVideo.setAttribute('controls', '');
+            theVideo.setAttribute('playsInline','');
+            theVideo.setAttribute('webkit-playsinline','');
+
+            theSource.setAttribute('src',videoList[i].fields['video_url']);
+            theVideo.appendChild(theSource);
+
+            mMain.appendChild(theVideo);
+            let player = new EZUIPlayer(theVideo.id);
+            player.play();
+
+        }
+
+
+
+    </script>
 {% endblock %}

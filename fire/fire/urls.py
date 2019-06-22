@@ -23,4 +23,5 @@ urlpatterns = [
     path('login/', views.login),
     path('monitor/', views.monitor),
     path('overview/', views.overview),
+    path('', views.empty_redirect),
 ]
