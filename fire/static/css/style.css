@@ -7,6 +7,12 @@
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 #popup{
     position: fixed;
@@ -157,9 +163,6 @@ div {
 .charts-father{
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 .charts{
     display: grid;
@@ -300,14 +303,14 @@ div {
 }
 
 .monitor-amount{
-
     /*background: rgba(0, 0, 0, .2);*/
 }
-.monitor-amount > div {
-    background: rgba(0, 0, 0, .5);
+.monitor-amount {
+    background: rgba(255, 255, 255, .2);
     /*background: rgba(255, 255, 255, .2);*/
     width: 100%;
-    min-height: 500px ;
+    height: 80%;
+    /*min-height: 500px ;*/
     -webkit-border-radius: 0 10px 10px 10px;
     -moz-border-radius: 0 10px 10px 10px;
     border-radius: 0 10px 10px 10px;
@@ -329,8 +332,8 @@ div {
     max-height: 100%;
     grid-template-rows: auto 1fr;
     margin: 6px 30px 30px 30px;
-    /*background: rgba(255, 255, 255, .3);*/
-    background: rgba(0, 0, 0, .5);
+    background: rgba(255, 255, 255, .2);
+    /*background: rgba(0, 0, 0, .5);*/
     -webkit-border-radius: 0 10px 10px 10px;
     -moz-border-radius: 0 10px 10px 10px;
     border-radius: 0 10px 10px 10px;
@@ -390,10 +393,6 @@ div {
 
 
 .warning-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     margin: 20px;
     background: rgba(255, 255, 255, .2);
 }
@@ -446,6 +445,8 @@ td img{
 }
 
 #wrap {
+    margin: 0;
+    padding: 0;
     display: flex;
     /*align-items: center;;*/
     justify-content: center;
@@ -457,10 +458,6 @@ td img{
 #wrap .banner {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     position:absolute;
     top:0;
     width:100%;
@@ -472,6 +469,7 @@ td img{
 #wrap .banner .banner-img{
     margin: 0;
     padding: 0;
+    width: 95%;
 }
 
 #wrap .banner-img img{
@@ -503,7 +501,7 @@ td img{
 #wrap .prev {
     position:absolute;
     left:20px;
-    top:210px;
+    top: 40%;
     width:41px;
     height:69px;
     background: url(../img/icon-slides.png) 82px;
@@ -515,7 +513,7 @@ td img{
 #wrap .next {
     position:absolute;
     right:20px;
-    top:210px;
+    top: 40%;
     width:41px;
     height:69px;
     background: url("../img/icon-slides.png") 41px;

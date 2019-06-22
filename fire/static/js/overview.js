@@ -168,11 +168,25 @@ window.onresize = function () {
 var wrapper = document.getElementById('wrap');
 var aBanner = wrapper.getElementsByClassName('banner');
 var aSpan = wrapper.getElementsByClassName('tab')[0].getElementsByTagName('span');
-var oNext = wrapper.getElementsByClassName('next');
-var oPrev = wrapper.getElementsByClassName('prev');
+var oNext = wrapper.getElementsByClassName('next')[0];
+var oPrev = wrapper.getElementsByClassName('prev')[0];
 
 aBanner[0].style.opacity = "1";
+aSpan[0].className = "on" ;
 var num =0;
+
+for (var i = 0; i < aBanner.length; i++) {
+    aSpan[i].index = i;
+    aSpan[i].onclick = function(){
+
+        aSpan[num].className = "";
+        aBanner[num].style.opacity = '0';
+
+        num = this.index;
+        aSpan[num].className = "on";
+        aBanner[num].style.opacity = '1';
+    }
+}
 
 function timeSlide(){
     aBanner[num].style.opacity = '0';
@@ -193,13 +207,15 @@ oNext.onclick = function () {
     timer = setInterval(timeSlide,2000);
 };
 oPrev.onclick = function () {
+    console.log("This is the start of prev"+num);
     clearInterval(timer);
     aBanner[num].style.opacity = '0';
     aSpan[num].className = "";
     num = (num-1+aBanner.length)%aBanner.length;
     aBanner[num].style.opacity = '1';
-    aSpan.className = 'on';
-
+    aSpan[num].className = 'on';
+    timer = setInterval(timeSlide, 2000);
+    console.log("This is the end of prev"+ num);
 };
 
 wrapper.onmouseover = function () {
@@ -209,4 +225,5 @@ wrapper.onmouseout = function () {
     clearInterval(timer);
     timer = setInterval(timeSlide,2000);
 };
-alert("I've worked");
+
+
