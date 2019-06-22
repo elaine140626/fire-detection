@@ -153,15 +153,20 @@ div {
 }
 
 
+/*Charts-father 用来给charts居中 charts来完成charts的透明框以及一些其他的设置*/
 .charts-father{
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .charts{
+    display: grid;
+    grid-template-rows: auto 1fr;
     min-height: 400px;
-    height: 90%;
-    width: 90%;
+    height: 95%;
+    width: 95%;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -331,9 +336,10 @@ div {
     border-radius: 0 10px 10px 10px;
     overflow: hidden;
 }
-.monitor-live .title{
+.monitor-live .title, .charts .title{
     margin: 0;
-    font-size: 1.2rem;
+    padding: 0 0 0 10px;
+    font-size: 15px;
     -webkit-border-radius: 0 0 5px 0;
     -moz-border-radius: 0 0 5px 0;
     border-radius: 0 0 5px 0;
@@ -356,7 +362,7 @@ div {
 }
 .monitor-live-main div{
     /*background: rgba(255, 255, 255, .4);*/
-    background: rgba(0, 0, 0);
+    background: rgba(0, 0, 0,.3);
 }
 /*.monitor-amount:before{*/
 /*content: '';*/
@@ -369,14 +375,14 @@ div {
 /*z-index: -1;*/
 
 /*.monitor-amount:before{*/
-    /*content: '';*/
-    /*position: absolute;*/
-    /*top: -2px;*/
-    /*left: -2px;*/
-    /*right: -2px;*/
-    /*bottom: -2px;*/
-    /*background: ;*/
-    /*z-index: -1;*/
+/*content: '';*/
+/*position: absolute;*/
+/*top: -2px;*/
+/*left: -2px;*/
+/*right: -2px;*/
+/*bottom: -2px;*/
+/*background: ;*/
+/*z-index: -1;*/
 
 
 
@@ -429,4 +435,92 @@ td{
 }
 td img{
     width: 200px;
+}
+
+
+/* the slide part */
+
+.slide-content{
+    margin: 0;
+    padding: 0;
+}
+
+#wrap {
+    display: flex;
+    /*align-items: center;;*/
+    justify-content: center;
+    position:relative;
+    /*margin:20px auto;*/
+    width: 100%;
+    height: 100%;
+}
+#wrap .banner {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position:absolute;
+    top:0;
+    width:100%;
+    height:100%;
+    opacity:0;
+    transition: opacity 2s;
+}
+
+#wrap .banner .banner-img{
+    margin: 0;
+    padding: 0;
+}
+
+#wrap .banner-img img{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#wrap .tab{
+    position:absolute;
+    bottom:30px;
+    align-self: center;
+}
+#wrap .tab span{
+    display: inline-block;
+    width:6px;
+    height:6px;
+    margin:3px;
+    background:rgba(105,105,105,0.5);
+    border-radius:50%;
+    cursor: pointer;
+    border:2px solid #887B6E;
+}
+#wrap .tab span.on{
+    background:#E2CEB7;
+}
+#wrap .tab span:hover{
+    background:#E2CEB7;
+}
+#wrap .prev {
+    position:absolute;
+    left:20px;
+    top:210px;
+    width:41px;
+    height:69px;
+    background: url(../img/icon-slides.png) 82px;
+    cursor:pointer;
+}
+#wrap .prev:hover{
+    background: url(../img/icon-slides.png);
+}
+#wrap .next {
+    position:absolute;
+    right:20px;
+    top:210px;
+    width:41px;
+    height:69px;
+    background: url("../img/icon-slides.png") 41px;
+    cursor:pointer;
+}
+#wrap .next:hover{
+    background: url(../img/icon-slides.png) 123px;
 }

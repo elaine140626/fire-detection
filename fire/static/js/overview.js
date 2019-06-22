@@ -3,7 +3,7 @@
 let option = {
     // backgroundColor: '#2c343c',
     title:{
-        text:'设备安装数量统计图'
+        // text:'设备安装数量统计图'
     },
     tooltip:{},
     legend:{
@@ -42,7 +42,7 @@ let option2 = {
     optical:0.5,
 
     title: {
-        text:'装备在线统计图',
+        // text:'装备在线统计图',
         // left: 'center',
         // top: 20,
         // textStyle: {
@@ -155,10 +155,58 @@ myChart.setOption(option);
 myChart2.setOption(option2);
 myChart3.setOption(option3);
 
-
 window.onresize = function () {
 
     myChart.resize();
     myChart2.resize();
     myChart3.resize();
 };
+
+
+// slide part
+
+var wrapper = document.getElementById('wrap');
+var aBanner = wrapper.getElementsByClassName('banner');
+var aSpan = wrapper.getElementsByClassName('tab')[0].getElementsByTagName('span');
+var oNext = wrapper.getElementsByClassName('next');
+var oPrev = wrapper.getElementsByClassName('prev');
+
+aBanner[0].style.opacity = "1";
+var num =0;
+
+function timeSlide(){
+    aBanner[num].style.opacity = '0';
+    aSpan[num].className = "";
+    // alert("This is "+num);
+    num = (num+1)%aBanner.length;
+    aBanner[num].style.opacity = '1';
+    aSpan[num].className = "on";
+}
+
+var timer = setInterval(timeSlide,2000);
+
+
+
+oNext.onclick = function () {
+    clearInterval(timer);
+    timeSlide();
+    timer = setInterval(timeSlide,2000);
+};
+oPrev.onclick = function () {
+    clearInterval(timer);
+    aBanner[num].style.opacity = '0';
+    aSpan[num].className = "";
+    num = (num-1+aBanner.length)%aBanner.length;
+    aBanner[num].style.opacity = '1';
+    aSpan.className = 'on';
+
+};
+
+wrapper.onmouseover = function () {
+    clearInterval(timer);
+};
+wrapper.onmouseout = function () {
+    clearInterval(timer);
+    timer = setInterval(timeSlide,2000);
+};
+alert("I've worked");

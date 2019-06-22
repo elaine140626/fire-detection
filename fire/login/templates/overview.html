@@ -7,13 +7,18 @@
     <div class="overview-content">
         <div class="overview-left">
             <div class="device-vol charts-father">
-                <div id="vol-chart" class="charts" style="height: 95%; width: 95%;">
+                <div class="charts">
+                    <div class="title" style="width: 130px;">设备安装统计图</div>
+                    <div id="vol-chart" >
 
+                    </div>
                 </div>
             </div>
             <div class="device-online charts-father">
-                <div id="online-chart" class="charts" style="height: 95%; width: 95%;">
-
+                <div class="charts">
+                    <div class="title" style="width: 130px;">设备在线统计图</div>
+                    <div id="online-chart" >
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,13 +26,16 @@
             <div class="map" id="map-container"></div>
             <div class="overview-middle-bottom">
                 <div class="device-amount charts-father">
-                    <div class="status-chart charts" style="height: 95%; width: 95%;">
-
+                    <div class="charts">
+                        <div class="status-chart" style="height: 95%; width: 95%;">
+                        </div>
                     </div>
                 </div>
                 <div class="sensor charts-father">
-                    <!--<div class="title">微气象</div>-->
-                    <div id="sensor-chart" style="width:95%; height: 95%;" class="charts"></div>
+                    <div class="charts">
+                        <div class="title">微气象</div>
+                        <div id="sensor-chart"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -35,15 +43,63 @@
             <div class="warnings charts-father">
                 <div class="warning-message charts"></div>
             </div>
+            <!-- 图片轮播报警图片 -->
             <div class="slides charts-father">
-                <div class="pic-slide charts"></div>
+                <div class="pic-slide charts">
+                    <div class="title">
+
+                    </div>
+                    <div class="slide-content">
+                        <div id="wrap">
+
+                            <div class="banner">
+                                <div class="banner-img">
+                                    <img src="/static/img/altitude-clouds-cold-933054-small.jpg" height="100%" alt="轮播图1">
+                                </div>
+                            </div>
+
+                            <div class="banner">
+                                <div class="banner-img">
+                                    <img src="/static/img/altitude-clouds-cold-933054-small.jpg" height="100%" alt="轮播图2">
+                                </div>
+                            </div>
+
+                            <div class="banner">
+                                <div class="banner-img">
+                                    <img src="/static/img/icon-slides.png" height="100%" alt="轮播图3">
+                                </div>
+                            </div>
+
+                            <div class="banner">
+                                <div class="banner-img">
+                                    <img src="/static/img/altitude-clouds-cold-933054-small.jpg" height="100%" alt="轮播图4">
+                                </div>
+                            </div>
+
+
+
+                            <div class="tab">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                            <div class="prev">
+
+                            </div>
+                            <div class="next"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block script %}
-{#    <script type="text/javascript" src="static/echarts.js"></script>#}
+    {#    <script type="text/javascript" src="static/echarts.js"></script>#}
     <script type="text/javascript" src="{% static 'js/echarts.min.js' %}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=QsGnMSGuvCa3B680i1DHAL3cDG8COE3e"></script>
     <script src="{% static 'js/overview.js' %}"></script>
@@ -51,5 +107,6 @@
         var map = new BMap.Map("map-container");
         var point = new BMap.Point(116.404, 39.915);
         map.centerAndZoom(point, 15);
+
     </script>
 {% endblock %}

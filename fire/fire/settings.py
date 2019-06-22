@@ -27,7 +27,8 @@ SECRET_KEY = 'ig-kbh#bi=v(73nnnvo+**&fv1at)gknf=ks3a_mpus)viebwc'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	"188.131.241.21"
+	"188.131.241.21",
+    "127.0.0.1"
 	]
 
 
@@ -147,7 +148,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+STATIC_ROOT = os.path.join(BASE_DIR,'/static/')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
