@@ -1,3 +1,4 @@
 .idea/
 fire/fire/__pycache__/
 **/__pycache__/
+**/untrack/
