@@ -48,43 +48,64 @@
             }
         }
 
-        for(let i=0; i < UserMessageList.length; i++){
-            let theNumber = document.createElement('td'),
-                theDate = document.createElement('td'),
-                theInfo = document.createElement('td'),
-                DeviceNumber = document.createElement('td'),
-                DeviceHint = document.createElement('td'),
-                theStatus = document.createElement('td'),
-                thePic = document.createElement('td'),
-                realPic = document.createElement('img');
+        function ListRender(){
+            for(let i=0; i < UserMessageList.length; i++){
+                let theNumber = document.createElement('td'),
+                    theDate = document.createElement('td'),
+                    theInfo = document.createElement('td'),
+                    DeviceNumber = document.createElement('td'),
+                    DeviceHint = document.createElement('td'),
+                    theStatus = document.createElement('td'),
+                    thePic = document.createElement('td'),
+                    realPic = document.createElement('img');
 
-            let theTd = document.createElement('tr');
+                let theTd = document.createElement('tr');
 
-            let Node = UserMessageList[i];
-            console.log(Node);
-            console.log(Node['id']);
-            theNumber.innerText = Node['id'];
-            console.log(theNumber.innerText);
-            console.log(theNumber);
-            theDate.innerText = Node['c_time'];
-            theInfo.innerText = Node['content'];
-            DeviceNumber.innerText = Node['device_number'];
-            DeviceHint.innerText = Node['device_hint'];
-            theStatus.innerText  = (Node['deal'] ? '已审核':'未审核');
-            realPic.src = Node['img_url'];
-            thePic.appendChild(realPic);
-            let list = [theNumber,theDate,theInfo,DeviceNumber,DeviceHint,theStatus,thePic];
+                let Node = UserMessageList[i];
+                console.log(Node);
+                console.log(Node['id']);
+                theNumber.innerText = Node['id'];
+                console.log(theNumber.innerText);
+                console.log(theNumber);
+                theDate.innerText = Node['c_time'];
+                theInfo.innerText = Node['content'];
+                DeviceNumber.innerText = Node['device_number'];
+                DeviceHint.innerText = Node['device_hint'];
+                theStatus.innerText  = (Node['deal'] ? '已审核':'未审核');
+                realPic.src = Node['img_url'];
+                thePic.appendChild(realPic);
+                {#let list = [theNumber,theDate,theInfo,DeviceNumber,DeviceHint,theStatus,thePic];#}
 
-            theTd.appendChild(theNumber);
-            theTd.appendChild(theDate);
-            theTd.appendChild(theInfo);
-            theTd.appendChild(DeviceNumber);
-            theTd.appendChild(DeviceHint);
-            theTd.appendChild(theStatus);
-            theTd.appendChild(thePic);
+                theTd.appendChild(theNumber);
+                theTd.appendChild(theDate);
+                theTd.appendChild(theInfo);
+                theTd.appendChild(DeviceNumber);
+                theTd.appendChild(DeviceHint);
+                theTd.appendChild(theStatus);
+                theTd.appendChild(thePic);
 
-            addTr.appendChild(theTd);
+                theTd.setAttribute('state',Node['deal']);
 
+                addTr.appendChild(theTd);
+            }
         }
+        function reRender(targetState) {
+            for(i in addTr.childNodes)
+            {
+                if (targetState === "all")
+                    i.style.display = 'block';
+                else if (targetState === i.state) {
+                    i.style.display = 'block';
+                }
+                else{
+                    i.style.display = 'none';
+                }
+            }
+            rebind();
+        }
+
+        ListRender();
+        rebind();
+
     </script>
 {% endblock %}
