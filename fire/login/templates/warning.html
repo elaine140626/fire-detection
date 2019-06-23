@@ -36,20 +36,30 @@
 
 {% block script %}
     <script src=" {% static 'js/warning.js' %}"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="{% static 'js/zui.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/selectable/zui.selectable.min.js' %}"></script>
     <script>
+
         var UserMessageList = {{ user_message_list|safe }};
 
         var addTr = document.getElementById('add-tr');
 
-        function appendChildren(father,children) {
-            console.log(children);
-            for(i in children){
-                father.appendChild(i);
-            }
-        }
 
+
+        function showFloating(message,success) {
+            new $.zui.Messager(message,{
+                type:success?'success':'warning',
+                icon:success?'heart':'bug'
+                }
+            ).show();
+        }
         function ListRender(){
+
+            let flag = true;
+
             for(let i=0; i < UserMessageList.length; i++){
+                flag = false;
                 let theNumber = document.createElement('td'),
                     theDate = document.createElement('td'),
                     theInfo = document.createElement('td'),
@@ -62,11 +72,7 @@
                 let theTd = document.createElement('tr');
 
                 let Node = UserMessageList[i];
-                console.log(Node);
-                console.log(Node['id']);
                 theNumber.innerText = Node['id'];
-                console.log(theNumber.innerText);
-                console.log(theNumber);
                 theDate.innerText = Node['c_time'];
                 theInfo.innerText = Node['content'];
                 DeviceNumber.innerText = Node['device_number'];
@@ -84,21 +90,28 @@
                 theTd.appendChild(theStatus);
                 theTd.appendChild(thePic);
 
-                theTd.setAttribute('state',Node['deal']);
+                theTd.setAttribute('data-state',Node['deal']);
+                theTd.setAttribute('data-id', Node['id']);
 
                 addTr.appendChild(theTd);
             }
+            if(flag) {
+                showFloating("没有查询到对应数据",false);
+            }
+            else {
+                showFloating('查询成功', true);
+            }
         }
         function reRender(targetState) {
-            for(i in addTr.childNodes)
+            let flag =true;
+            for(let i=0; i < addTr.children.length; i++)
             {
-                if (targetState === "all")
-                    i.style.display = 'block';
-                else if (targetState === i.state) {
-                    i.style.display = 'block';
+                if (targetState === "all" || targetState === addTr.children[i].dataset.state) {
+                    flag = false;
+                    addTr.children[i].style.display = "";
                 }
                 else{
-                    i.style.display = 'none';
+                    addTr.children[i].style.display = "none";
                 }
             }
             rebind();
@@ -106,6 +119,14 @@
 
         ListRender();
         rebind();
+
+        $('#add-tr').selectable({
+            selector: 'tr',
+            select:function (e) {
+                console.log(e.id + e.selected.length);
+                console.log(e.selected);
+            }
+        });
 
     </script>
 {% endblock %}

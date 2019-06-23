@@ -88,6 +88,7 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
 
 }
 .head-bar .btn button, .head-bar a{
@@ -445,6 +446,10 @@ td{
 }
 td img{
     width: 200px;
+}
+
+.warning-body #add-tr tr.active{
+    background: darkseagreen;
 }
 
 
