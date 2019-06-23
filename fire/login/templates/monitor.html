@@ -28,7 +28,7 @@
                 监控直播
             </div>
             <div class="monitor-container">
-                <div id="monitor-live-main" class="monitor-live-main">
+                <div id="monitor-live-main">
                 </div>
 
             </div>
@@ -58,6 +58,8 @@
 
         var mLeft = document.getElementById('monitor-left'),
             mMain = document.getElementById('monitor-live-main');
+
+        mMain.className = 'grid-' + defaultLayout;
 
         for(i=0;i<videoList.length;i++){
             let theTh = document.createElement('tr');

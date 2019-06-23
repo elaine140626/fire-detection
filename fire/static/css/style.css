@@ -357,9 +357,19 @@ div {
 }
 .monitor-live-main{
     height: 100%;
+}
+.grid-4 {
     display: grid;
     grid-template-columns: repeat(4,1fr);
     grid-gap: 10px;
+
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 10px;
+
 }
 .monitor-live-main div{
     /*background: rgba(255, 255, 255, .4);*/

@@ -165,11 +165,12 @@ window.onresize = function () {
 
 // slide part
 
-var wrapper = document.getElementById('wrap');
-var aBanner = wrapper.getElementsByClassName('banner');
-var aSpan = wrapper.getElementsByClassName('tab')[0].getElementsByTagName('span');
-var oNext = wrapper.getElementsByClassName('next')[0];
-var oPrev = wrapper.getElementsByClassName('prev')[0];
+var wrapper = document.getElementById('wrapper');
+var wrap = document.getElementById('wrap');
+var aBanner = wrap.getElementsByClassName('banner');
+var aSpan = wrap.getElementsByClassName('tab')[0].getElementsByTagName('span');
+var oNext = wrap.getElementsByClassName('next')[0];
+var oPrev = wrap.getElementsByClassName('prev')[0];
 
 aBanner[0].style.opacity = "1";
 aSpan[0].className = "on" ;
