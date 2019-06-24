@@ -129,7 +129,8 @@
                 theContent = document.createElement('td');
 
             time_str = message[i].fields['c_time'];
-            theTime.innerText = time_str.substr(0,10) +' ' + time_str.substr(11,8);
+            {#theTime.innerText = time_str.substr(0,10) +' ' + time_str.substr(11,8);#}
+            theTime.innerText = time_str.substr(0,10);
             theContent.innerText = message[i].fields['content'];
             theTr.appendChild(theTime);
             theTr.appendChild(theContent);

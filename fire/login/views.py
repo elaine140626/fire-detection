@@ -30,7 +30,7 @@ def warning(request):
             'device_number':i.serial_number.id,
             'device_hint':i.serial_number.hint,
             'deal':i.id in user_message_dict,
-            'c_time':i.c_time.strftime('%Y-%m-%d %H:%M:%S')
+            'c_time':i.c_time.strftime('%Y-%m-%d')
         }
         for i in message_list]
 

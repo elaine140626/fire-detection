@@ -92,6 +92,8 @@
 
                 theTd.setAttribute('data-state',Node['deal']);
                 theTd.setAttribute('data-id', Node['id']);
+                theTd.setAttribute('data-date', Node['c_time']);
+                theTd.setAttribute('data-device', Node['device_number']);
 
                 addTr.appendChild(theTd);
             }
@@ -102,11 +104,13 @@
                 showFloating('查询成功', true);
             }
         }
-        function reRender(targetState) {
+        function reRender(Date, Device, State) {
             let flag =true;
             for(let i=0; i < addTr.children.length; i++)
             {
-                if (targetState === "all" || targetState === addTr.children[i].dataset.state) {
+                if ((State === "all" || State === addTr.children[i].dataset.state) ||
+                    (Date === "all" || Date === addTr.children[i].dataset.date) ||
+                    (Device === 'all' || Device === addTr.children[i].dataset.device)) {
                     flag = false;
                     addTr.children[i].style.display = "";
                 }
