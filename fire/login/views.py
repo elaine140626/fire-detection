@@ -54,8 +54,13 @@ def overview(request):
         user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
         user_message_list = [i.message_id for i in user_message ]
         message_list = models.Message.objects.exclude(id__in=user_message_list)[:10]
+        message_count = models.Message.objects.count()
+        device_count = models.Device.objects.count()
 
         ret_vars['message_list'] = serializers.serialize('json', message_list)
+        ret_vars['device_count'] = device_count
+        ret_vars['message_count'] = message_count
+        ret_vars['user_deal'] = len(user_message)
 
         return render(request, 'overview.html', ret_vars)
 

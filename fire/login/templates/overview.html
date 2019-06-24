@@ -27,7 +27,8 @@
             <div class="overview-middle-bottom">
                 <div class="device-amount charts-father center">
                     <div class="charts">
-                        <div class="status-chart" style="height: 95%; width: 95%;">
+                        <div class="title">装置数量</div>
+                        <div id="device-amount-state">
                         </div>
                     </div>
                 </div>
@@ -134,6 +135,38 @@
             theTr.appendChild(theContent);
             addTr.appendChild(theTr);
         }
+
+        var DD = document.getElementById('device-amount-state');
+        DD.appendChild(document.createElement('div'));
+        DD.className = 'center';
+        var Device = DD.children[0];
+        Device.className = 'device-state';
+        Device.style = 'display : grid; grid-template-columns : 1fr 1fr; border : 1 px solid black; margin : 0; padding : 15px 50px 15px 50px; ';
+
+        (()=>{
+            function DA(text, style, amount){
+                let Div = document.createElement('div'),
+                    Para = document.createElement('p'),
+                    Para2 = document.createElement('p');
+
+                Para.className = 'device-para';
+                Para2.className = 'device-para';
+
+                Para.innerText = text;
+                Para.style = 'text-align : center';
+                Para2.style = style + ' text-align : center; ';
+                console.log(Para2.style);
+                Para2.innerText = amount;
+                Div.style = 'margin : 0; padding : 0; ';
+                Div.appendChild(Para);
+                Div.appendChild(Para2);
+                Device.appendChild(Div);
+            }
+            DA('已处理数目', 'background-color : darkgreen; ', {{ user_deal }});
+            DA('未处理数目', 'background-color : rgba(255, 131, 128, .7); ', {{ message_count }});
+            DA('设备在线', 'background-color : rgba( 87, 135, 144, .7); ', {{ device_count }});
+            DA('设备离线', 'background-color : rgba(97, 93, 92, .7); ', 0);
+        })();
 
     </script>
     <script src="{% static 'js/overview.js' %}"></script>
