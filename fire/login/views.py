@@ -116,3 +116,16 @@ def login(request):
 
 def empty_redirect(request):
     return redirect('/overview/')
+
+
+def logout(request):
+    # the logout function
+
+    if not request.session.get('is_login',None):
+        return redirect('/login/')
+
+    request.session.flush()
+
+    return redirect('/login/')
+
+
