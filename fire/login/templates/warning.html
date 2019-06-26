@@ -64,9 +64,10 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="warning-bar">
-
+            <div class="warning-bar pull-right" id="selected-active" style="display: none;">
+                <button class="btn btn-lg btn-success">预警正确</button>
+                <button class="btn btn-lg btn-danger">预警错误</button>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -82,13 +83,14 @@
         var UserMessageList = {{ user_message_list|safe }};
 
         var addTr = document.getElementById('add-tr'),
-            warningDevice = document.getElementById('warning-device');
+            warningDevice = document.getElementById('warning-device'),
+            selectActive = document.getElementById('selected-active');
 
 
 
-        function showFloating(message,success) {
+        function showFloating(message,success,other) {
             new $.zui.Messager(message,{
-                    type:success?'success':'warning',
+                    type:other ? other : (success?'success':'warning'),
                     icon:success?'heart':'bug'
                 }
             ).show();
@@ -195,6 +197,12 @@
             select:function (e) {
                 console.log(e.id + e.selected.length);
                 console.log(e.selected);
+                if(e.selected.length >0 ){
+                    selectActive.style.display = '';
+                }
+                else{
+                    selectActive.style.display = 'none';
+                }
             }
         });
 
@@ -219,6 +227,9 @@
             reRender(date.value, device.value, state.value);
         });
 
+        date.addEventListener('change',(e)=>{
+            reRender(date.value, device.value, state.value);
+        });
         state.addEventListener('change',(e)=>{
             reRender(date.value, device.value, state.value);
         });
@@ -226,6 +237,7 @@
             reRender(date.value, device.value, state.value);
         });
 
+        showFloating('单击单选，拖拽复选;\n按住Ctrl可以附加选\n按住Alt选取文字(如果发现不能选中，尝试单击Alt)', 'false', 'special');
 
     </script>
 {% endblock %}
