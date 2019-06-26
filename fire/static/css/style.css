@@ -589,4 +589,22 @@ div {
     .head-bar .btn{
         height: 50px;
     }
+    .overview-content {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "left right"
+            "middle middle";
+    }
+    .overview-left{
+        grid-area: left;
+    }
+    .overview-right{
+        grid-area: right;
+    }
+    .overview-middle{
+        grid-area: middle;
+    }
 }
+
