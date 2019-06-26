@@ -12,42 +12,44 @@
     {% block extern_file %}
 
     {% endblock %}
-{#    <link href="https://fonts.font.im/css?family=Open+Sans:600" rel="stylesheet">#}
+    {#    <link href="https://fonts.font.im/css?family=Open+Sans:600" rel="stylesheet">#}
 </head>
 <body>
 <div class="all-divs">
     <div class="head-bar">
         <div class="head-title">山大 i-Learn 智能烟火识别系统</div>
-        <script src="{% static 'js/headClick.js' %}"></script>
-        <div class="btn">
-            <button class="real-btn" onclick="toOverview()">
-                系统总览
-            </button>
-        </div>
-        <div class="btn">
-            <button class="real-btn" onclick="toMonitor()">
-                监控可视化
-            </button>
-        </div>
-        <div class="btn">
-            <button class="real-btn" onclick="toWarning()">
-                告警分析
-            </button>
-        </div>
-        <div class="btn">
-            <button class="real-btn">
-                日志管理
-            </button>
-        </div>
-        <div class="btn">
-            <button class="real-btn">
-                推送系统
-            </button>
-        </div>
-        <div class="btn">
-            <button class="real-btn" onclick="toConf()">
-                系统配置
-            </button>
+        <div class="overview-button-div">
+            <script src="{% static 'js/headClick.js' %}"></script>
+            <div class="btn">
+                <button class="real-btn" onclick="toOverview()">
+                    系统总览
+                </button>
+            </div>
+            <div class="btn">
+                <button class="real-btn" onclick="toMonitor()">
+                    监控可视化
+                </button>
+            </div>
+            <div class="btn">
+                <button class="real-btn" onclick="toWarning()">
+                    告警分析
+                </button>
+            </div>
+            <div class="btn">
+                <button class="real-btn">
+                    日志管理
+                </button>
+            </div>
+            <div class="btn">
+                <button class="real-btn">
+                    推送系统
+                </button>
+            </div>
+            <div class="btn">
+                <button class="real-btn" onclick="toConf()">
+                    系统配置
+                </button>
+            </div>
         </div>
         <div class="btn session-state">
             {% if request.session.is_login %}

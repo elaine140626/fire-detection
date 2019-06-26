@@ -24,5 +24,6 @@ urlpatterns = [
     path('monitor/', views.monitor),
     path('overview/', views.overview),
     path('logout/', views.logout),
+    path('data/', views.DealData),
     path('', views.empty_redirect),
 ]

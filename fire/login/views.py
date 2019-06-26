@@ -2,6 +2,7 @@ from django.shortcuts import render
 from . import models
 from .forms import UserForm
 from django.core import serializers
+from django.http import HttpResponse
 import json
 import datetime
 
@@ -132,5 +133,17 @@ def logout(request):
     request.session.flush()
 
     return redirect('/login/')
+
+def DealData(request):
+
+    if request.method == "POST":
+
+        if request.POST.get('code',None) == '0':
+            models.Message.objects.create(content='来自设备id为 '+request.POST.get('camera_id',None)+' 的报警信息',
+                                          img_url=request.POST.get('image_url', None), serial_number=request.POST['camera_id'])
+        return HttpResponse('oddk')
+
+    else:
+        return HttpResponse('emm')
 
 

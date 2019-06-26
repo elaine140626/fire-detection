@@ -50,8 +50,8 @@
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>日期</th>
-                                    <th>预警详情</th>
+                                    <th class="my-th">日期</th>
+                                    <th class="my-th">预警详情</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -131,7 +131,9 @@
             time_str = message[i].fields['c_time'];
             {#theTime.innerText = time_str.substr(0,10) +' ' + time_str.substr(11,8);#}
             theTime.innerText = time_str.substr(0,10);
+            theTime.className = 'my-td';
             theContent.innerText = message[i].fields['content'];
+            theContent.className = 'my-td';
             theTr.appendChild(theTime);
             theTr.appendChild(theContent);
             addTr.appendChild(theTr);

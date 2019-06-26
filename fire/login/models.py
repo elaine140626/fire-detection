@@ -26,6 +26,7 @@ class Video(models.Model):
 class Device(models.Model):
     '设备'
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='设备号')
+    serial_number = models.CharField(max_length=128, unique=True, verbose_name='设备序列号')
     location_x = models.FloatField(verbose_name='经度')
     location_y = models.FloatField(verbose_name='纬度')
     hint = models.CharField(max_length=128, verbose_name='标识')
@@ -37,7 +38,7 @@ class Message(models.Model):
     content = models.CharField(max_length=256,verbose_name='告警信息')
     img_url = models.CharField(max_length=256, verbose_name='图片链接')
     c_time = models.DateTimeField(auto_now_add=True, verbose_name='时间')
-    serial_number = models.ForeignKey(to='Device', to_field='id', verbose_name='设备号', on_delete=models.CASCADE)
+    serial_number = models.ForeignKey(to='Device', to_field='serial_number', verbose_name='设备号', on_delete=models.CASCADE)
 
 
 class User_Message(models.Model):
