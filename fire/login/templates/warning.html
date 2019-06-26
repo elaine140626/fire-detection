@@ -33,7 +33,6 @@
                             </label>
                             <select name="device" id="warning-device" class="form-control chosen-selected text-center">
                                 <option value="all">所有设备</option>
-                                <option value="2">none</option>
                             </select>
 
                         </th>
@@ -82,7 +81,8 @@
 
         var UserMessageList = {{ user_message_list|safe }};
 
-        var addTr = document.getElementById('add-tr');
+        var addTr = document.getElementById('add-tr'),
+            warningDevice = document.getElementById('warning-device');
 
 
 
@@ -95,7 +95,8 @@
         }
         function ListRender(){
 
-            let flag = true;
+            let flag = true,
+                opt = {};
 
             for(let i=0; i < UserMessageList.length; i++){
                 flag = false;
@@ -118,6 +119,7 @@
                 theInfo.innerText = Node['content'];
                 theInfo.className = 'my-td';
                 DeviceNumber.innerText = Node['device_number'];
+                opt[Node['device_number']] = 1;
                 DeviceNumber.className = 'my-td';
                 DeviceHint.innerText = Node['device_hint'];
                 DeviceHint.className = 'my-td';
@@ -142,6 +144,15 @@
                 theTd.setAttribute('data-device', Node['device_number']);
 
                 addTr.appendChild(theTd);
+            }
+
+            for(id in opt){
+                let Option = document.createElement('option');
+
+                Option.value = opt[id];
+                Option.innerText = opt[id];
+
+                warningDevice.appendChild(Option);
             }
             if(flag) {
                 showFloating("没有查询到对应数据",false);
