@@ -168,6 +168,12 @@
                 }
             }
             rebind();
+            if(flag) {
+                showFloating("没有查询到对应数据",false);
+            }
+            else {
+                showFloating('查询成功', true);
+            }
         }
 
         ListRender();
