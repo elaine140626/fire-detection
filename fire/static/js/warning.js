@@ -27,3 +27,10 @@ function rebind(){
     }
 }
 
+
+let makeTrue = document.getElementById('make-true'),
+    makkeFalse = document.getElementById('make-false');
+
+
+
+

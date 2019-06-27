@@ -65,8 +65,42 @@
                 </table>
             </div>
             <div class="warning-bar pull-right" id="selected-active" style="display: none;">
-                <button class="btn btn-lg btn-success">预警正确</button>
-                <button class="btn btn-lg btn-danger">预警错误</button>
+                <button class="btn btn-lg btn-success" id="make-true" data-toggle="modal" data-target="#myModal">预警正确</button>
+                <button class="btn btn-lg btn-danger" id="make-false" data-toggle="modal" data-target="#myModal2">预警错误</button>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title">注意</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="model1-para"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postTrue()">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal2">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                        <h4 class="modal-title">注意</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="model2-para"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postFalse()">确定</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -141,7 +175,7 @@
                 theTd.appendChild(thePic);
 
                 theTd.setAttribute('data-state',Node['deal']);
-                theTd.setAttribute('data-id', Node['id']);
+                theTd.setAttribute('data-id',Node['id']);
                 theTd.setAttribute('data-date', Node['c_time']);
                 theTd.setAttribute('data-device', Node['device_number']);
 
@@ -195,6 +229,18 @@
         $('#add-tr').selectable({
             selector: 'tr',
             select:function (e) {
+                let theDate = $('#add-tr').data('zui.selectable');
+                console.log(theDate.selections);
+                console.log(e.id + e.selected.length);
+                console.log(e.selected);
+                if(e.selected.length >0 ){
+                    selectActive.style.display = '';
+                }
+                else{
+                    selectActive.style.display = 'none';
+                }
+            },
+            unselect:function (e) {
                 console.log(e.id + e.selected.length);
                 console.log(e.selected);
                 if(e.selected.length >0 ){
@@ -238,6 +284,83 @@
         });
 
         showFloating('单击单选，拖拽复选;\n按住Ctrl可以附加选\n按住Alt选取文字(如果发现不能选中，尝试单击Alt)', 'false', 'special');
+
+        $('#myModal').on('shown.zui.modal', function (e) {
+            let para1 = document.getElementById('model1-para'),
+                theDate = $('#add-tr').data('zui.selectable').selections,
+                len =0;
+
+            for (i in theDate){
+                if(theDate[i]){
+                    len++;
+                }
+            }
+            para1.innerText = ('你确定要将这 ' + len +'条预警信息标记为告警正确么？');
+        });
+        $('#myModal2').on('shown.zui.modal', function (e) {
+            let para1 = document.getElementById('model2-para'),
+                theDate = $('#add-tr').data('zui.selectable').selections,
+                len =0;
+
+            for (i in theDate){
+                if(theDate[i]){
+                    len++;
+                }
+            }
+            para1.innerText = ('你确定要将这 ' + len +'条预警信息标记为告警错误么？');
+        });
+
+        function changeState(changeArray) {
+            console.log(changeArray);
+            for(let i=0, cl=changeArray.length; i <cl; i++ ){
+                console.log(changeArray[i]);
+                for(let j =0,al = addTr.children.length; j < al; j++){
+                    console.log(addTr.children[j]);
+                    console.log(addTr.children[j].dataset.id);
+                    if( changeArray[i] == addTr.children[j].dataset.id){
+                        addTr.children[j].setAttribute('data-state', 'true');
+                        addTr.children[j].children[4].innerText = '已审核';
+                    }
+                }
+            }
+        }
+        
+        function postTrue() {
+            let theDate = $('#add-tr').data('zui.selectable').selections,
+                retArray  = [];
+            for(let i in theDate){
+                if(theDate[i]){
+                    retArray.push(i);
+                }
+            }
+            $.post('/warning/true/',{'data':retArray.toString()},(data, textStatus, jqXHR)=>{
+                if (textStatus === 'success') {
+                    showFloating('修改成功','true');
+                    changeState(retArray);
+                }
+                else{
+                    showFloating('修改失败', 'false', 'warning');
+                }
+            })
+        }
+        function postFalse() {
+            let theDate = $('#add-tr').data('zui.selectable').selections,
+                retArray  = [];
+            for(let i in theDate){
+                if(theDate[i]){
+                    retArray.push(i);
+                }
+            }
+            $.post('/warning/false/',{'data':retArray.toString()},(data, textStatus, jqXHR)=>{
+                if (textStatus === 'success') {
+                    showFloating('修改成功','true');
+                    changeState(retArray);
+                }
+                else {
+                    showFloating('修改失败', 'false', 'warning');
+                }
+            })
+        }
 
     </script>
 {% endblock %}

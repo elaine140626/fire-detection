@@ -19,6 +19,8 @@ from login import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('warning/true/', views.dealTrue),
+    path('warning/false/', views.dealFalse),
     path('warning/', views.warning),
     path('login/', views.login),
     path('monitor/', views.monitor),

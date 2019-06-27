@@ -19,8 +19,12 @@ def warning(request):
         ret_vars['username']=request.session['user_name']
 
         user = models.User.objects.get(name = request.session['user_name'])
-        user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
-        user_message_dict = {i.message_id:'true' for i in user_message }
+        user_message = models.User_Message.objects.values('message_id', 'true_or_false').filter(user_id=user.id)
+        print(user_message)
+        user_message_dict = {}
+        for i in user_message:
+            print(i)
+            user_message_dict[i['message_id']] = 'true'
         print(user_message_dict)
         message_list = models.Message.objects.all()
 
@@ -146,4 +150,85 @@ def DealData(request):
     else:
         return HttpResponse('emm')
 
+
+
+def dealTrue(request):
+
+    response = HttpResponse()
+
+    if not request.session.get('is_login',None):
+        response.status_code = 400
+        response.content = '没有登陆'
+        return response
+
+    if request.method == 'POST':
+
+
+        id_array = request.POST['data'].split(',')
+
+        print(id_array)
+        user = models.User.objects.get(name=request.session['user_name'])
+
+        try:
+            for id in id_array:
+                message = models.Message.objects.get(id=id)
+                if models.User_Message.objects.filter(user_id=user,message_id=message).exists():
+                    models.User_Message.objects.filter(user_id=user,message_id=message).update(true_or_false=True)
+                else:
+                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),true_or_false=True)
+        except:
+            response.status_code = 500
+            raise Exception()
+
+        else:
+            response.status_code = 200
+
+        return response
+
+    else:
+
+        response.status_code = 404
+        response.content = '找不到页面'
+        return response
+
+
+def dealFalse(request):
+
+    response = HttpResponse()
+
+    if not request.session.get('is_login',None):
+        response.status_code = 400
+        response.content = '没有登陆'
+        return response
+
+    if request.method == 'POST':
+
+
+        id_array = request.POST['data'].split(',')
+
+        print(id_array)
+        user = models.User.objects.get(name=request.session['user_name'])
+
+        try:
+
+            for id in id_array:
+                message = models.Message.objects.get(id=id)
+                if models.User_Message.objects.filter(user_id=user,message_id=message).exists():
+                    models.User_Message.objects.filter(user_id=user,message_id=message).update(true_or_false=False)
+                else:
+                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),true_or_false=False)
+        except:
+            response.status_code = 500
+            raise Exception()
+
+        else:
+            response.status_code = 200
+
+        return response
+
+    else:
+
+        response.status_code = 404
+        response.content = '找不到页面'
+        return response
 
