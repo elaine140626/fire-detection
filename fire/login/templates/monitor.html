@@ -24,9 +24,25 @@
             </div>
         </div>
         <div class="monitor-live">
-            <div class="tab-title">
-                监控直播
-            </div>
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- 导航头部 -->
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="your/nice/url">ZUI</a>
+                    </div>
+                    <!-- 导航项目 -->
+                    <div class="collapse navbar-collapse navbar-collapse-example">
+                        <!-- 右侧的导航项目 -->
+                        <ul class="nav navbar-nav nav-pills navbar-right">
+                            <li class=""><a href="#" onclick="oneg()">1 x N</a></li>
+                            <li class=""><a href="#" onclick="twog()">2 x N</a></li>
+                            <li class=""><a href="#" onclick="fourg()">4 x N</a></li>
+                            <li class=""><a href="#" onclick="eightg()">8 x N</a></li>
+
+                        </ul>
+                    </div><!-- END .navbar-collapse -->
+                </div>
+            </nav>
             <div class="monitor-container">
                 <div id="monitor-live-main">
                 </div>
@@ -48,7 +64,7 @@
 
         var theWidth, theHeight;
 
-         function calcLayout() {
+        function calcLayout() {
             let divWidth = document.getElementById('monitor-live-main');
             theWidth = ( divWidth.clientWidth - (defaultLayout+1)*30 )/defaultLayout;
             theHeight = theWidth *0.82+60;

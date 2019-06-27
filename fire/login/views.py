@@ -233,3 +233,16 @@ def dealFalse(request):
         response.content = '找不到页面'
         return response
 
+def MessageAmount(request):
+
+    response = HttpResponse()
+
+    if not request.session.get('is_login',None):
+        response.status_code = 400
+        response.content = '没有登陆'
+        return response
+
+    response.content = models.Message.objects.all().count()
+    print(response.content)
+    response.status_code = 200
+    return response

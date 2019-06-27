@@ -26,6 +26,7 @@
     text-align: center;
     display: none;
     z-index: 999;
+    transition-duration: .3s;
 }
 #popup .bg{
     background: rgba(0,0,0,.5);
@@ -53,6 +54,7 @@ div {
     display: grid;
     grid-template-rows: auto 1fr;
     /*background: rgba(178,187,190,0.7);*/
+    transition-duration: .3s;
 
 }
 .all-divs::after{
