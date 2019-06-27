@@ -143,9 +143,17 @@ def DealData(request):
 
     if request.method == "POST":
 
-        if request.POST.get('code',None) == '0':
-            models.Message.objects.create(content='来自设备id为 '+request.POST.get('camera_id',None)+' 的报警信息',
-                                          img_url=request.POST.get('image_url', None), serial_number=request.POST['camera_id'])
+        data = request.POST.get('data')
+        data = json.loads(data)
+        print(type(data.get('code')))
+        if data.get('code',None) == 0:
+            data = data.get('data')
+            print(data)
+            for dd in data:
+                print(dd.get('camera_id'))
+                device = models.Device.objects.get(serial_number=dd.get('camera_id'))
+                models.Message.objects.create(content='来自设备id为 '+dd.get('camera_id',None)+' 的报警信息',
+                                          img_url=dd.get('image_url', None), serial_number=device)
         return HttpResponse('oddk')
 
     else:
