@@ -58,7 +58,7 @@ def overview(request):
         user = models.User.objects.get(name=request.session['user_name'])
         user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
         user_message_list = [i['message_id'] for i in user_message ]
-        message_list = models.Message.objects.exclude(id__in=user_message_list)[:10]
+        message_list = models.Message.objects.exclude(id__in=user_message_list)[-10:]
         message_count = models.Message.objects.count()
         device_count = models.Device.objects.count()
 
