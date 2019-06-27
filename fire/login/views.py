@@ -64,8 +64,9 @@ def overview(request):
 
         ret_vars['message_list'] = serializers.serialize('json', message_list)
         ret_vars['device_count'] = device_count
-        ret_vars['message_count'] = message_count
+        ret_vars['un_deal'] = message_count - len(user_message)
         ret_vars['user_deal'] = len(user_message)
+        print(user_message)
 
         return render(request, 'overview.html', ret_vars)
 

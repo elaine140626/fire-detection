@@ -166,7 +166,7 @@
                 Device.appendChild(Div);
             }
             DA('已处理数目', 'background-color : darkgreen; ', {{ user_deal }});
-            DA('未处理数目', 'background-color : rgba(255, 131, 128, .7); ', {{ message_count }});
+            DA('未处理数目', 'background-color : rgba(255, 131, 128, .7); ', {{ un_deal }} );
             DA('设备在线', 'background-color : rgba( 87, 135, 144, .7); ', {{ device_count }});
             DA('设备离线', 'background-color : rgba(97, 93, 92, .7); ', 0);
         })();
