@@ -108,7 +108,7 @@
             wrapper = document.getElementById('wrapper'),
             addSpan = document.getElementById('add-span');
 
-        for(var i=0; i<message.length; i++) {
+        for(var i=Math.max(0,message.length-10); i<message.length; i++) {
             let theSpan = document.createElement('span');
             addSpan.appendChild(theSpan);
 
