@@ -34,10 +34,10 @@
                     <div class="collapse navbar-collapse navbar-collapse-example">
                         <!-- 右侧的导航项目 -->
                         <ul class="nav navbar-nav nav-pills navbar-right">
-                            <li class=""><a href="#" onclick="oneg()">1 x N</a></li>
-                            <li class=""><a href="#" onclick="twog()">2 x N</a></li>
-                            <li class=""><a href="#" onclick="fourg()">4 x N</a></li>
-                            <li class=""><a href="#" onclick="eightg()">8 x N</a></li>
+                            <li class=""><a href="#" onclick="changeLayout(1)">1 x N</a></li>
+                            <li class=""><a href="#" onclick="changeLayout(2)">2 x N</a></li>
+                            <li class=""><a href="#" onclick="changeLayout(4)">4 x N</a></li>
+                            <li class=""><a href="#" onclick="changeLayout(8)">8 x N</a></li>
 
                         </ul>
                     </div><!-- END .navbar-collapse -->
@@ -109,6 +109,19 @@
 
         }
 
+
+
+        function changeLayout(value) {
+            defaultLayout = value;
+            theLive = document.getElementById('monitor-live-main');
+            theLive.className = 'grid-' + value;
+            calcLayout();
+            for(let i=0; i < videoList.length; i++){
+                let theElement = document.getElementById('myPlayer'+videoList[i].pk + 'flashId');
+                a.height = theHeight;
+                a.width = theWidth;
+            }
+        }
 
 
     </script>
