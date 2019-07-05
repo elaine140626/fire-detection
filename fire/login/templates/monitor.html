@@ -34,10 +34,10 @@
                     <div class="collapse navbar-collapse navbar-collapse-example">
                         <!-- 右侧的导航项目 -->
                         <ul class="nav navbar-nav nav-pills navbar-right">
-                            <li class=""><a href="#" onclick="changeLayout(1)">1 x N</a></li>
-                            <li class=""><a href="#" onclick="changeLayout(2)">2 x N</a></li>
-                            <li class=""><a href="#" onclick="changeLayout(4)">4 x N</a></li>
-                            <li class=""><a href="#" onclick="changeLayout(8)">8 x N</a></li>
+                            <li class=""><a href="#" id="click-grid-1">1 x N</a></li>
+                            <li class=""><a href="#" id="click-grid-2">2 x N</a></li>
+                            <li class=""><a href="#" id="click-grid-4">4 x N</a></li>
+                            <li class=""><a href="#" id="click-grid-8">8 x N</a></li>
 
                         </ul>
                     </div><!-- END .navbar-collapse -->
@@ -77,7 +77,7 @@
 
         mMain.className = 'grid-' + defaultLayout;
 
-        for(i=0;i<videoList.length;i++){
+        for(let i=0;i<videoList.length;i++){
             let theTh = document.createElement('tr');
             let theTr = document.createElement('td');
             theTr.innerText = '设备' + videoList[i].pk;
@@ -117,10 +117,25 @@
             theLive.className = 'grid-' + value;
             calcLayout();
             for(let i=0; i < videoList.length; i++){
-                let theElement = document.getElementById('myPlayer'+videoList[i].pk + 'flashId');
-                a.height = theHeight;
-                a.width = theWidth;
+                let theId = 'myPlayer' + videoList[i].pk + 'flashId',
+                    theFatherElement = document.getElementById(theId),
+                    theElement = theFatherElement.children[theFatherElement.childElementCount-1];
+                theElement.height = theHeight;
+                theElement.width = theWidth;
             }
+        }
+
+        for(let i of [1,2,4,8]){
+            let theId = 'click-grid-' + i,
+                theElement = document.getElementById(theId);
+
+            console.log(theId);
+            console.log(theElement);
+
+            theElement.addEventListener('click', ()=>{
+                changeLayout(i);
+            })
+
         }
 
 
