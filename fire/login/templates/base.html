@@ -6,6 +6,9 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>{% block title %}山大iLearn智能烟火识别系统{% endblock %}</title>
     <link href="{% static 'css/zui.min.css' %}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
@@ -73,12 +76,12 @@
 <script src="{% static 'js/zui.min.js' %}" type="text/javascript"></script>
 <script>
     function showFloating(message,success,other) {
-            new $.zui.Messager(message,{
-                    type:other ? other : (success?'success':'warning'),
-                    icon:success?'heart':'bug'
-                }
-            ).show();
-        }
+        new $.zui.Messager(message,{
+                type:other ? other : (success?'success':'warning'),
+                icon:success?'heart':'bug'
+            }
+        ).show();
+    }
 </script>
 {% block script%}{% endblock %}
 <script>
