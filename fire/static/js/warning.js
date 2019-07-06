@@ -1,4 +1,5 @@
 function rebind(){
+    // 给所有img 都绑定点击全屏事件
     let img =
         document.getElementById('warning-table').getElementsByTagName('img');
     let len = img.length;

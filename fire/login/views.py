@@ -8,17 +8,16 @@ import datetime
 
 # Create your views here.
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 
 
 def warning(request):
-
     ret_vars = {}
 
     if request.session.get('is_login', None):
-        ret_vars['username']=request.session['user_name']
+        ret_vars['username'] = request.session['user_name']
 
-        user = models.User.objects.get(name = request.session['user_name'])
+        user = models.User.objects.get(name=request.session['user_name'])
         user_message = models.User_Message.objects.values('message_id', 'true_or_false').filter(user_id=user.id)
         print(user_message)
         user_message_dict = {}
@@ -29,15 +28,15 @@ def warning(request):
         message_list = models.Message.objects.all()
 
         user_message_list = [{
-            'id':i.id,
-            'content':i.content,
-            'img_url':i.img_url,
-            'device_number':i.serial_number.id,
-            'device_hint':i.serial_number.hint,
-            'deal':i.id in user_message_dict,
-            'c_time':i.c_time.strftime('%Y-%m-%d')
+            'id': i.id,
+            'content': i.content,
+            'img_url': i.img_url,
+            'device_number': i.serial_number.id,
+            'device_hint': i.serial_number.hint,
+            'deal': i.id in user_message_dict,
+            'c_time': i.c_time.strftime('%Y-%m-%d')
         }
-        for i in message_list]
+            for i in message_list]
 
         print(user_message_list)
         ret_vars['user_message_list'] = json.dumps(user_message_list)
@@ -48,38 +47,43 @@ def warning(request):
 
     return redirect('/login')
 
-def overview(request):
 
+def overview(request):
     ret_vars = {}
 
     if request.session.get('is_login', None):
-        ret_vars['username']=request.session['user_name']
+        ret_vars['username'] = request.session['user_name']
 
         user = models.User.objects.get(name=request.session['user_name'])
         user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
-        user_message_list = [i['message_id'] for i in user_message ]
+        user_message_list = [i['message_id'] for i in user_message]
         message_list = models.Message.objects.exclude(id__in=user_message_list)
         message_count = models.Message.objects.count()
         device_count = models.Device.objects.count()
+        devices = models.Device.objects.all()
+        device_points = []
+        for d in devices:
+            device_points.append([d.location_x, d.location_y])
 
         ret_vars['message_list'] = serializers.serialize('json', message_list)
         ret_vars['device_count'] = device_count
         ret_vars['un_deal'] = message_count - len(user_message)
         ret_vars['user_deal'] = len(user_message)
+        ret_vars['device_points'] = json.dumps(device_points)
         print(user_message)
 
         return render(request, 'overview.html', ret_vars)
 
     return redirect('/login')
 
-def monitor(request):
 
+def monitor(request):
     ret_vars = {}
 
     if request.session.get('is_login', None):
-        ret_vars['username']=request.session['user_name']
+        ret_vars['username'] = request.session['user_name']
         user = models.User.objects.get(name=request.session['user_name'])
-        video_list = models.Video.objects.filter(user_id= user.id)
+        video_list = models.Video.objects.filter(user_id=user.id)
         ret_vars['video_list'] = serializers.serialize('json', video_list)
         ret_vars['default_layout'] = user.layout
 
@@ -87,8 +91,8 @@ def monitor(request):
 
     return redirect('/login')
 
-def login(request):
 
+def login(request):
     ret_var = {}
     login_form = UserForm(request.POST)
     ret_var['login_form'] = login_form
@@ -96,19 +100,17 @@ def login(request):
     if request.session.get('is_login', None):
         return redirect('/overview')
 
-
     if request.method == "POST":
 
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
 
-
             username = username.strip()
             print(username)
             print(password)
 
-                # print("I'm hhhhhhhherre")
+            # print("I'm hhhhhhhherre")
             try:
                 # print("I'm hhhhhhhherre")
                 user = models.User.objects.get(name=username)
@@ -125,6 +127,7 @@ def login(request):
 
     return render(request, 'login.html', ret_var)
 
+
 def empty_redirect(request):
     return redirect('/overview/')
 
@@ -132,46 +135,49 @@ def empty_redirect(request):
 def logout(request):
     # the logout function
 
-    if not request.session.get('is_login',None):
+    if not request.session.get('is_login', None):
         return redirect('/login/')
 
     request.session.flush()
 
     return redirect('/login/')
 
-def DealData(request):
 
+def DealData(request):
     if request.method == "POST":
 
         data = request.POST.get('data')
         data = json.loads(data)
         print(type(data.get('code')))
-        if data.get('code',None) == 0:
+        if data.get('code', None) == 0:
             data = data.get('data')
             print(data)
             for dd in data:
                 print(dd.get('camera_id'))
-                device = models.Device.objects.get(serial_number=dd.get('camera_id'))
-                models.Message.objects.create(content='来自设备id为 '+dd.get('camera_id',None)+' 的报警信息',
-                                          img_url=dd.get('image_url', None), serial_number=device)
+                try:
+                    device = models.Device.objects.get(serial_number=dd.get('camera_id'))
+                    models.Message.objects.create(content='来自设备id为 ' + dd.get('camera_id', None) + ' 的报警信息',
+                                              img_url=dd.get('image_url', None), serial_number=device)
+                except:
+                    raise  Exception()
+                else:
+                    #send message
+                    pass
         return HttpResponse('oddk')
 
     else:
         return HttpResponse('emm')
 
 
-
 def dealTrue(request):
-
     response = HttpResponse()
 
-    if not request.session.get('is_login',None):
+    if not request.session.get('is_login', None):
         response.status_code = 400
         response.content = '没有登陆'
         return response
 
     if request.method == 'POST':
-
 
         id_array = request.POST['data'].split(',')
 
@@ -181,10 +187,11 @@ def dealTrue(request):
         try:
             for id in id_array:
                 message = models.Message.objects.get(id=id)
-                if models.User_Message.objects.filter(user_id=user,message_id=message).exists():
-                    models.User_Message.objects.filter(user_id=user,message_id=message).update(true_or_false=True)
+                if models.User_Message.objects.filter(user_id=user, message_id=message).exists():
+                    models.User_Message.objects.filter(user_id=user, message_id=message).update(true_or_false=True)
                 else:
-                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),true_or_false=True)
+                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),
+                                                       true_or_false=True)
         except:
             response.status_code = 500
             raise Exception()
@@ -202,16 +209,14 @@ def dealTrue(request):
 
 
 def dealFalse(request):
-
     response = HttpResponse()
 
-    if not request.session.get('is_login',None):
+    if not request.session.get('is_login', None):
         response.status_code = 400
         response.content = '没有登陆'
         return response
 
     if request.method == 'POST':
-
 
         id_array = request.POST['data'].split(',')
 
@@ -222,10 +227,11 @@ def dealFalse(request):
 
             for id in id_array:
                 message = models.Message.objects.get(id=id)
-                if models.User_Message.objects.filter(user_id=user,message_id=message).exists():
-                    models.User_Message.objects.filter(user_id=user,message_id=message).update(true_or_false=False)
+                if models.User_Message.objects.filter(user_id=user, message_id=message).exists():
+                    models.User_Message.objects.filter(user_id=user, message_id=message).update(true_or_false=False)
                 else:
-                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),true_or_false=False)
+                    models.User_Message.objects.create(user_id=user, message_id=models.Message.objects.get(id=id),
+                                                       true_or_false=False)
         except:
             response.status_code = 500
             raise Exception()
@@ -241,11 +247,11 @@ def dealFalse(request):
         response.content = '找不到页面'
         return response
 
-def MessageAmount(request):
 
+def MessageAmount(request):
     response = HttpResponse()
 
-    if not request.session.get('is_login',None):
+    if not request.session.get('is_login', None):
         response.status_code = 400
         response.content = '没有登陆'
         return response

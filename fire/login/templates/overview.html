@@ -175,8 +175,14 @@
     <script src="{% static 'js/overview.js' %}"></script>
     <script>
         var map = new BMap.Map("map-container");
-        var point = new BMap.Point(120.697792, 36.369133);
+        var point = new BMap.Point(120.697792, 36.369133),
+            devicePoints = {{ device_points|safe }}
         map.centerAndZoom(point, 15);
+
+        for(let i=0; i<devicePoints.length; i++){
+            let thePoint = new BMap.Marker(new BMap.Point(devicePoints[i][0], devicePoints[i][1]));
+            map.addOverlay(thePoint);
+        }
 
     </script>
 {% endblock %}
