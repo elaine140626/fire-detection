@@ -5,20 +5,22 @@
 
 {% block main_body %}
     <div class="conf-content center">
-        <div class="container-fixed-sm white-blur-3">
-            <nav class="navbar navbar-default" role="navigation" style="padding: 0;">
-                <div class="container-fluid" style="padding: 0;margin: 0; height: 25px;">
-                    <!-- 导航头部 -->
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="##">设置</a>
+        <div class="container-fixed-sm white-blur-5" style="padding: 60px 70px;">
+            <div class="container-fluid no-padding">
+                <nav class="navbar navbar-default" role="navigation" style="padding: 0; height: 35px; margin: 0;">
+                    <div class="container-fluid" style="padding: 0;margin: 0; height: 25px;">
+                        <!-- 导航头部 -->
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="##">设置</a>
+                        </div>
+                        <!-- 导航项目 -->
+                        <div class="collapse navbar-collapse navbar-collapse-example">
+                            <!-- 右侧的导航项目 -->
+                        </div><!-- END .navbar-collapse -->
                     </div>
-                    <!-- 导航项目 -->
-                    <div class="collapse navbar-collapse navbar-collapse-example">
-                        <!-- 右侧的导航项目 -->
-                    </div><!-- END .navbar-collapse -->
-                </div>
-            </nav>
-            <div class="container-fluid">
+                </nav>
+            </div>
+            <div class="container-fixed-xs">
                 <form action="/conf/" method="post">
                     <div class="form-group">
                         <label for="exampleInputAccount1">手机号</label>

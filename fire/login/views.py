@@ -260,3 +260,15 @@ def MessageAmount(request):
     print(response.content)
     response.status_code = 200
     return response
+
+
+def conf(request):
+    ret_vars = {}
+
+    if request.session.get('is_login', None):
+        ret_vars['username'] = request.session['user_name']
+
+
+        return render(request, 'conf.html', ret_vars)
+
+    return redirect('/login')
