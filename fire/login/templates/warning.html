@@ -64,45 +64,48 @@
                     </tbody>
                 </table>
             </div>
+            <ul id="myPager" class="pager center" data-ride="pager" data-page="1"  data-max-nav-count="6"
+                data-elements="first_icon,prev_icon,pages,next_icon,last_icon"></ul>
             <div class="warning-bar pull-right" id="selected-active" style="display: none;">
                 <button class="btn btn-lg btn-success" id="make-true" data-toggle="modal" data-target="#myModal">预警正确</button>
                 <button class="btn btn-lg btn-danger" id="make-false" data-toggle="modal" data-target="#myModal2">预警错误</button>
             </div>
         </div>
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
-                        <h4 class="modal-title">注意</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p id="model1-para"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postTrue()">确定</button>
-                    </div>
+    </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title">注意</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="model1-para"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postTrue()">确定</button>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="myModal2">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
-                        <h4 class="modal-title">注意</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p id="model2-para"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postFalse()">确定</button>
-                    </div>
+    </div>
+    <div class="modal fade" id="myModal2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+                    <h4 class="modal-title">注意</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="model2-para"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="postFalse()">确定</button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 
@@ -116,7 +119,9 @@
 
         var addTr = document.getElementById('add-tr'),
             warningDevice = document.getElementById('warning-device'),
-            selectActive = document.getElementById('selected-active');
+            selectActive = document.getElementById('selected-active'),
+            trLeft = UserMessageList.length,
+            trPerPage = 10;
 
 
 
@@ -130,7 +135,8 @@
         function ListRender(){
 
             let flag = true,
-                opt = {};
+                opt = {},
+                trAmount = trPerPage;
 
             for(let i=UserMessageList.length-1; i >=0 ; i--){
                 flag = false;
@@ -177,6 +183,13 @@
                 theTd.setAttribute('data-date', Node['c_time']);
                 theTd.setAttribute('data-device', Node['device_number']);
 
+                if( trAmount === 0){
+                    theTd.style.display = 'none';
+                }
+                else{
+                    trAmount --;
+                }
+
                 addTr.appendChild(theTd);
             }
 
@@ -195,24 +208,47 @@
                 showFloating('查询成功', true);
             }
         }
-        function reRender(Date, Device, State) {
-            var mySelectable = $('#add-tr').data('zui.selectable');
-            mySelectable.unselect();
+
+        function reRender(Date, Device, State, page = 1) {
+
+            let blankTr = (page-1)*trPerPage,
+                trAmount = trPerPage;
+
+            trLeft =0;
+
+            clearSelectoin();
+
             let flag =true;
             for(let i=0; i < addTr.children.length; i++)
             {
                 if ((State === "all" || State === addTr.children[i].dataset.state) &&
                     (Date === "" || Date === addTr.children[i].dataset.date) &&
                     (Device === 'all' || Device === addTr.children[i].dataset.device)) {
+
+                    trLeft ++;
                     flag = false;
-                    addTr.children[i].style.display = "";
-                    console.log(' ' + addTr.children[i].dataset.state + addTr.children[i].dataset.date + addTr.children[i].dataset.device);
+
+                    if(blankTr >0 ){
+                        blankTr --;
+                        addTr.children[i].style.display = 'none';
+                    }
+                    else if(trAmount > 0 ){
+                        trAmount --;
+                        addTr.children[i].style.display = "";
+                    }
+                    else{
+                        addTr.children[i].style.display = 'none';
+                    }
+                    {#console.log(' ' + addTr.children[i].dataset.state + addTr.children[i].dataset.date + addTr.children[i].dataset.device);#}
                 }
                 else{
                     addTr.children[i].style.display = "none";
                 }
             }
             rebind();
+            console.log(trLeft);
+            let pagerTmp = $('#myPager').data('zui.pager');
+            pagerTmp.set(page, trLeft);
             if(flag) {
                 showFloating("没有查询到对应数据",false);
             }
@@ -223,6 +259,8 @@
 
         ListRender();
         rebind();
+
+        // 选择器部分
 
         $('#add-tr').selectable({
             selector: 'tr',
@@ -250,7 +288,12 @@
             }
         });
 
-        // 仅选择日期
+        function clearSelectoin() {
+            let mySelectable = $('#add-tr').data('zui.selectable');
+            mySelectable.unselect();
+        }
+
+        // filter 部分
 
         var date = document.querySelector('#warning-date'),
             device = document.querySelector('#warning-device'),
@@ -258,6 +301,8 @@
 
         $(".form-date").datetimepicker(
             {
+                // 日期选择发的初始化
+
                 language:  "zh-CN",
                 weekStart: 1,
                 todayBtn:  1,
@@ -268,8 +313,13 @@
                 forceParse: 0,
                 format: "yyyy-mm-dd"
             }).on('changeDate', function (e) {
+
+            //日期选择改动之后的相应部分，对整个table进行重新渲染
+
             reRender(date.value, device.value, state.value);
         });
+
+        // 这三个EventListener 是完成当三个选择器改变之后 都会重新进行渲染
 
         date.addEventListener('change',(e)=>{
             reRender(date.value, device.value, state.value);
@@ -282,6 +332,8 @@
         });
 
         showFloating('单击单选，拖拽复选;\n按住Ctrl可以附加选\n按住Alt选取文字(如果发现不能选中，尝试单击Alt)', 'false', 'special');
+
+        // 这个分别预警审核的确认对话框
 
         $('#myModal').on('shown.zui.modal', function (e) {
             let para1 = document.getElementById('model1-para'),
@@ -315,14 +367,14 @@
                 for(let j =0,al = addTr.children.length; j < al; j++){
                     console.log(addTr.children[j]);
                     console.log(addTr.children[j].dataset.id);
-                    if( changeArray[i] == addTr.children[j].dataset.id){
+                    if( changeArray[i] === addTr.children[j].dataset.id){
                         addTr.children[j].setAttribute('data-state', 'true');
                         addTr.children[j].children[4].innerText = '已审核';
                     }
                 }
             }
         }
-        
+
         function postTrue() {
             let theDate = $('#add-tr').data('zui.selectable').selections,
                 retArray  = [];
@@ -359,6 +411,15 @@
                 }
             })
         }
+        //  分页器 js 部分
+
+        $('#myPager').pager({
+            recTotal: trLeft
+        }).on('onPageChange', function(e, pageNew, pageOld) {
+            if (pageNew.page !== pageOld.page) {
+                reRender(date.value, device.value, state.value, pageNew.page);
+            }
+        });
 
     </script>
 {% endblock %}
