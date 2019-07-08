@@ -30,6 +30,7 @@ class Device(models.Model):
     location_x = models.FloatField(verbose_name='经度')
     location_y = models.FloatField(verbose_name='纬度')
     hint = models.CharField(max_length=128, verbose_name='标识')
+    video_url = models.CharField(max_length=256, verbose_name='视频地址', default='')
 
 
 class Message(models.Model):

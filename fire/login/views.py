@@ -63,7 +63,7 @@ def overview(request):
         devices = models.Device.objects.all()
         device_points = []
         for d in devices:
-            device_points.append([d.location_x, d.location_y])
+            device_points.append([d.location_x, d.location_y, d.video_url])
 
         ret_vars['message_list'] = serializers.serialize('json', message_list)
         ret_vars['device_count'] = device_count
