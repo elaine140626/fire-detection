@@ -176,37 +176,43 @@ aBanner[0].style.opacity = "1";
 aSpan[0].className = "on" ;
 var num =0;
 
+var makeOFF = (x)=>{
+        console.log("This is x" +x);
+        console.log(Date());
+        aSpan[x].className = '';
+        aBanner[x].style.opacity = '0';
+        addTr.children[x].style.background = '';
+    },
+    makeOn = (x)=>{
+        console.log("This is x" +x);
+        aSpan[x].className = 'on';
+        aBanner[x].style.opacity = '1';
+        addTr.children[x].style.background = 'rgba(246,135,124,.6)';
+    };
+
 for (var i = 0; i < aBanner.length; i++) {
     aSpan[i].index = i;
     aSpan[i].onclick = function(){
-
-        aSpan[num].className = "";
-        aBanner[num].style.opacity = '0';
-
+        makeOFF(num);
         num = this.index;
-        aSpan[num].className = "on";
-        aBanner[num].style.opacity = '1';
+        makeOn(num);
     }
 }
 
 function timeSlide(){
-    aBanner[num].style.opacity = '0';
-    aSpan[num].className = "";
-    // alert("This is "+num);
+    makeOFF(num);
     num = (num+1)%aBanner.length;
-    aBanner[num].style.opacity = '1';
-    aSpan[num].className = "on";
+    makeOn(num);
 }
 
 var timer = setInterval(timeSlide,2000);
-
-
 
 oNext.onclick = function () {
     clearInterval(timer);
     timeSlide();
     timer = setInterval(timeSlide,2000);
 };
+
 oPrev.onclick = function () {
     console.log("This is the start of prev"+num);
     clearInterval(timer);
@@ -227,4 +233,24 @@ wrapper.onmouseout = function () {
     timer = setInterval(timeSlide,2000);
 };
 
+
+// ----------------- 添加表格悬浮相应
+
+
+for(let i=0; i < addTr.children.length; i++){
+    console.log("This is add tr" + addTr);
+    console.log("This is its children");
+    console.log(addTr.children);
+
+    addTr.children[i].addEventListener('mouseover',(e)=>{
+        clearInterval(timer);
+        makeOFF(num);
+        num = i;
+        makeOn(num);
+    });
+    addTr.children[i].addEventListener('mouseout',(e)=>{
+        clearInterval(timer);
+        timer = setInterval(timeSlide, 2000);
+    });
+}
 
