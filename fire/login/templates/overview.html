@@ -136,6 +136,10 @@
             theContent.className = 'my-td';
             theTr.appendChild(theTime);
             theTr.appendChild(theContent);
+            theTr.style.transitionDuration = '.3s';
+            theTr.style.cursor = 'point';
+            theTr.setAttribute('index',i);
+            theTr.setAttribute('data-id',message[i]['pk']);
             addTr.appendChild(theTr);
         }
 
@@ -172,7 +176,6 @@
         })();
 
     </script>
-    <script src="{% static 'js/overview.js' %}"></script>
     <script src="{% static 'js/ezuikit.js'%} "></script>
     <script>
         var map = new BMap.Map("map-container");
@@ -184,12 +187,16 @@
         let popup = document.getElementById('popup'),
             container = popup.children[0];
 
+        // 添加点击popup空表部分 设置display为none
+        // 实现恢复正常界面效果
         popup.addEventListener('click', (e)=>{
             container.removeChild(container.children[1]);
 
             popup.style.display = 'none';
         });
 
+        // 给地图上添加设备点 并且给每个点添加点击监听
+        // 实现全屏播放的功能
         for(let i=0; i<devicePoints.length; i++){
             let thePoint = new BMap.Marker(new BMap.Point(devicePoints[i][0], devicePoints[i][1]));
 
@@ -226,4 +233,5 @@
         }
 
     </script>
+    <script src="{% static 'js/overview.js' %}"></script>
 {% endblock %}

@@ -87,17 +87,16 @@
 <script>
     var message_total =0,
         flag = false,
-        all = document.getElementsByClassName('all-divs')[0],
-        timer = undefined;
+        all = document.getElementsByClassName('all-divs')[0];
 
 
     function makeRed() {
         all.style.backgroundColor = 'red';
-        timer = setTimeout(makeNone, 450);
+        setTimeout(makeNone, 450);
     }
     function makeNone() {
         all.style.backgroundColor = '';
-        timer = setTimeout(makeRed, 750);
+        setTimeout(makeRed, 750);
     }
 
     function get_message_amount() {

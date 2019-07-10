@@ -254,3 +254,13 @@ for(let i=0; i < addTr.children.length; i++){
     });
 }
 
+
+
+(()=>{
+    for (let i=0; i<addTr.children.length; i++){
+        addTr.children[i].addEventListener('click',(e)=>{
+            window.location.href = '/warning/?id=' + addTr.children[i].dataset.id;
+        })
+    }
+})();
+
