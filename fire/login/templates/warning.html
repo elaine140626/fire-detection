@@ -422,6 +422,8 @@
             }
         });
 
+        console.log("This is another script");
+
     </script>
     <script>
         function getQueryVariable(variable)
@@ -442,8 +444,18 @@
                 let mySelectable = $('#add-tr').data('zui.selectable');
                 console.log(id);
                 let theTr = document.getElementById('tr'+id);
-                mySelectable.select(theTr);
 
+                for(let i=0; i<addTr.children.length;i++){
+                    if (Number(addTr.children[i].dataset.id) === id) {
+                        let pagerTmp = $('#myPager').data('zui.pager');
+                        console.log(i);
+                        console.log("This is the page number" + (Math.ceil(i/trPerPage) +1));
+                        pagerTmp.set( Math.floor(i / trPerPage)+1);
+                        $("#add-tr").animate({scrollTop: $('#tr'+id).position().top}, 300);
+                        break;
+                    }
+                }
+                mySelectable.select(theTr);
             }
 
 
