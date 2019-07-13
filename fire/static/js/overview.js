@@ -238,9 +238,6 @@ wrapper.onmouseout = function () {
 
 
 for(let i=0; i < addTr.children.length; i++){
-    console.log("This is add tr" + addTr);
-    console.log("This is its children");
-    console.log(addTr.children);
 
     addTr.children[i].addEventListener('mouseover',(e)=>{
         clearInterval(timer);

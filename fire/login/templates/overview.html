@@ -198,7 +198,11 @@
         // 给地图上添加设备点 并且给每个点添加点击监听
         // 实现全屏播放的功能
         for(let i=0; i<devicePoints.length; i++){
-            let thePoint = new BMap.Marker(new BMap.Point(devicePoints[i][0], devicePoints[i][1]));
+            let thept = new BMap.Point(devicePoints[i][0], devicePoints[i][1]);
+            let thePoint = new BMap.Marker(thept);
+            let message = devicePoints[i][3];
+            let infoWindow = new BMap.InfoWindow(message);
+
 
             thePoint.addEventListener('click',(e)=>{
 
@@ -227,6 +231,13 @@
 
                 popup.style.display = 'block';
 
+            });
+
+            thePoint.addEventListener('mouseover', ()=>{
+                thePoint.openInfoWindow(infoWindow);
+            });
+            thePoint.addEventListener('mouseout',()=>{
+                thePoint.closeInfoWindow();
             });
 
             map.addOverlay(thePoint);
