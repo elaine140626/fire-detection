@@ -3,12 +3,16 @@ from . import models
 from .forms import UserForm
 from django.core import serializers
 from django.http import HttpResponse
+import requests
+import time
 import json
 import datetime
 
 # Create your views here.
 
 from django.shortcuts import render, redirect
+
+URL = "http://140.143.244.242:8080/weixin/wxsend/sendTemp"
 
 
 def warning(request):
@@ -157,12 +161,20 @@ def DealData(request):
                 try:
                     device = models.Device.objects.get(serial_number=dd.get('camera_id'))
                     models.Message.objects.create(content='来自设备id为 ' + dd.get('camera_id', None) + ' 的报警信息',
-                                              img_url=dd.get('image_url', None), serial_number=device)
+                                                  img_url=dd.get('image_url', None), serial_number=device)
                 except:
-                    raise  Exception()
+                    raise Exception()
                 else:
-                    #send message
-                    pass
+                    tmp_data = {
+                        "title": "你有新的预警消息！",
+                        "warnContent": "您的设备" + dd.get('camera_id') + '发出了一条报警信息',
+                        "warnTime": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+                        "remarks": models.Device.objects.get(serial_number=dd.get('camera_id')).hint,
+                        "warnUrl": "http://188.131.241.21/warning/",
+                    }
+                    result = requests.post(URL, tmp_data)
+                    print(result.content)
+
         return HttpResponse('oddk')
 
     else:
@@ -267,7 +279,6 @@ def conf(request):
 
     if request.session.get('is_login', None):
         ret_vars['username'] = request.session['user_name']
-
 
         return render(request, 'conf.html', ret_vars)
 
