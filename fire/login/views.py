@@ -291,15 +291,17 @@ def wechat(request):
     if request.method == "GET":
 
         signature = request.GET['signature']
-        timetamp = request.GET['signature']
+        timestamp = request.GET['timestamp']
         nonce = request.GET['nonce']
         echostr = request.GET['echostr']
         token = "1122345"
 
-        li = [token, timetamp, nonce]
-        li.sort()
-        sha1 = hashlib.sha1()
-        map(sha1.update, li)
+        print(signature, timestamp, nonce, echostr)
+
+        list = [token, timestamp, nonce]
+        list.sort()
+        sha1 = hashlib.sha1((''.join(list)).encode('utf-8'))
+        map(sha1.update, list)
         hashcode = sha1.hexdigest()
 
         print(hashcode, signature, )
