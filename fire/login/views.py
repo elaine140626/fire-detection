@@ -6,6 +6,7 @@ from django.http import HttpResponse
 import requests
 import time
 import json
+import hashlib
 import datetime
 
 # Create your views here.
@@ -283,3 +284,28 @@ def conf(request):
         return render(request, 'conf.html', ret_vars)
 
     return redirect('/login')
+
+
+def wechat(request):
+
+    if request.method == "GET":
+
+        signature = request.GET['signature']
+        timetamp = request.GET['signature']
+        nonce = request.GET['nonce']
+        echostr = request.GET['echostr']
+        token = "1122345"
+
+        li = [token, timetamp, nonce]
+        li.sort()
+        sha1 = hashlib.sha1()
+        map(sha1.update, list)
+        hashcode = sha1.hexdigest()
+
+        print(hashcode, signature, )
+        if hashcode == signature:
+            return HttpResponse(echostr)
+        else:
+            return HttpResponse("")
+
+    return HttpResponse("213244")
