@@ -48,7 +48,7 @@ class ImageMsg(Msg):
 
 
 def DealWithEventMsg(recMsg : receive.EventMsg):
-    if recMsg.EventKey == "BIND_ACCOUNT"
+    if recMsg.EventKey == "BIND_ACCOUNT":
         return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "你在绑定账户")
-    else
-        return
+    else:
+        return "success"
