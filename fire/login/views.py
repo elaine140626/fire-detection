@@ -314,7 +314,7 @@ def wechat(request):
         recMsg = receive.parse_xml(content)
 
         if isinstance(recMsg, receive.EventMsg) or True:
-            ret = reply.TextMsg(recMsg.ToUserName, recMsg.FromUserName, "2333").send()
+            ret = reply.TextMsg(recMsg.FromUserName, recMsg.ToUserName, "2333").send()
             print("This is tht ret: ", ret)
             return HttpResponse(ret)
         print(ct)
