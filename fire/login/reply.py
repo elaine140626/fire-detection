@@ -28,7 +28,7 @@ class TextMsg(Msg):
            <Content><![CDATA[{Content}]]></Content>
            </xml>
            """
-        return XmlForm
+        return XmlForm.format(**self.__dict)
 
 
 class ImageMsg(Msg):
@@ -44,7 +44,7 @@ class ImageMsg(Msg):
         XmlForm = """
             <xml>
             <ToUserName><![CDATA[{ToUserName}]]></ToUserName>
-            <FromUserName><![CDATA[{FromUserName}]]></FromUserName>
+            <FromUserName><![CDATA[FromUserName}]]></FromUserName>
             <CreateTime>{CreateTime}</CreateTime>
             <MsgType><![CDATA[image]]></MsgType>
             <Image>
