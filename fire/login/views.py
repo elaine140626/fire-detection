@@ -290,10 +290,10 @@ def wechat(request):
 
     if request.method == "GET":
 
-        signature = request.GET['signature']
-        timestamp = request.GET['timestamp']
-        nonce = request.GET['nonce']
-        echostr = request.GET['echostr']
+        signature = request.GET.get("signature")
+        timestamp = request.GET.get('timestamp')
+        nonce = request.GET.get('nonce')
+        echostr = request.GET.get('echostr')
         token = "1122345"
 
         print(signature, timestamp, nonce, echostr)
