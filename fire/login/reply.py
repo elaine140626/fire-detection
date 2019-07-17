@@ -86,7 +86,7 @@ def DealWithEventMsg(rec_msg: receive.EventMsg):
     if rec_msg.EventKey == "BIND_ACCOUNT":
         return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName,
                        "输入\"bind 用户名 密码\"来绑定账户\n如用户名为： 123 密码为：456\n那么输入\"bind 123 456\"(不带引号)")
-    elif rec_msg.EventKey == "UN_VIEW":
+    elif rec_msg.EventKey == "UN_CHECK":
         return ImageTextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "articles", "Title", "Description",
                             "http://g.hiphotos.baidu.com/image/h%3D300/sign=84ec943a20738bd4db21b431918a876c/f7246b600c338744b5a0c49b5f0fd9f9d62aa0f4.jpg",
                             "https://www.baidu.com")
