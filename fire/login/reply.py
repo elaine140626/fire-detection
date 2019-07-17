@@ -51,4 +51,4 @@ def DealWithEventMsg(recMsg : receive.EventMsg):
     if recMsg.EventKey == "BIND_ACCOUNT":
         return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "你在绑定账户")
     else:
-        return "success"
+        return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "这个功能还莫得开发")
