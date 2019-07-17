@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from . import models
 from .forms import UserForm
 from django.core import serializers
@@ -7,7 +6,8 @@ import requests
 import time
 import json
 import hashlib
-import datetime
+import login.wechat_receive as receive
+import login.reply as reply
 
 # Create your views here.
 
@@ -287,7 +287,6 @@ def conf(request):
 
 
 def wechat(request):
-
     if request.method == "GET":
 
         signature = request.GET.get("signature")
@@ -311,8 +310,13 @@ def wechat(request):
             return HttpResponse("")
     elif request.method == "POST":
         ct = request.body
+        content = ct.decode()
+        recMsg = receive.parse_xml(content)
+
+        if isinstance(recMsg, receive.EventMsg):
+            return HttpResponse(reply.TextMsg(recMsg.ToUserName, recMsg.FromUserName, "2333").send())
         print(ct)
-        print(request.POST.get('data'))
+        print(content)
         return HttpResponse("123321")
 
     return HttpResponse("213244")
