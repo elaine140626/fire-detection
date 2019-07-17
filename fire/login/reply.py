@@ -1,6 +1,7 @@
 import time
 import login.wechat_receive as receive
 import re
+import login.models as models
 
 
 class Msg(object):
@@ -68,9 +69,17 @@ def DealWithTextMsg(rec_msg: receive.TextMsg):
         if len(str_arr) != 2:
             ret = "除content外，有两个字符串"
         else:
-            ret = "This is account" + str_arr[0] + "This is password" + str_arr[1]
+            if models.User.objects.filter(name=str_arr[0]).exists():
+                user = models.User.objects.get(name=str_arr[0])
+                ret = user.password
+                user.wechat_id = rec_msg.FromUserName
+                user.save()
+                user = models.User.objects.get(name=str_arr[0])
+                ret = user.wechat_id
+            else:
+                ret = "用户不存在，请重新检查后输入"
 
     else:
-        ret = "not bind"
+        ret = "无法识别该操作:)"
 
     return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, ret)
