@@ -1,4 +1,5 @@
 import time
+import login.wechat_receive as receive
 
 
 class Msg(object):
@@ -44,3 +45,8 @@ class ImageMsg(Msg):
             </xml>
             """
         return XmlForm.format(**self.__dict)
+
+
+def DealWithEventMsg(recMsg : receive.EventMsg):
+    if recMsg.EventKey == "BIND_ACCOUNT"
+        return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "你在绑定账户")
