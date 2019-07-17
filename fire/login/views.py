@@ -317,8 +317,9 @@ def wechat(request):
 
         if isinstance(recMsg, receive.EventMsg):
             ret = reply.DealWithEventMsg(recMsg).send()
+            return HttpResponse(ret)
         elif isinstance(recMsg, receive.TextMsg):
-            ret = "success"
+            return HttpResponse("success")
 
         print(ct)
         print(content)
