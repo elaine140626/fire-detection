@@ -29,6 +29,6 @@ urlpatterns = [
     path('logout/', views.logout),
     path('data/', views.DealData),
     path('conf/', views.conf),
-    path('wechat/', views.wechat),
+    path('wechat', views.wechat),
     path('', views.empty_redirect),
 ]

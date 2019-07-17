@@ -309,5 +309,10 @@ def wechat(request):
             return HttpResponse(echostr)
         else:
             return HttpResponse("")
+    elif request.method == "POST":
+        ct = request.body
+        print(ct)
+        print(request.POST.get('data'))
+        return HttpResponse("123321")
 
     return HttpResponse("213244")
