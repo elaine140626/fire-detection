@@ -1,5 +1,6 @@
 import time
 import login.wechat_receive as receive
+import re
 
 
 class Msg(object):
@@ -59,7 +60,17 @@ def DealWithTextMsg(rec_msg: receive.TextMsg):
     content = rec_msg.Content
     print(content)
     print(content[:4])
+
+    ret = ""
     if content[:4] == "bind":
-        return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "bind")
+        str_arr = content[4:].strip().split(' ')
+        print(str_arr)
+        if len(str_arr) != 2:
+            ret = "除content外，有两个字符串"
+        else:
+            ret = "This is account" + str_arr[0] + "This is password" + str_arr[1]
+
     else:
-        return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "not bind")
+        ret = "not bind"
+
+    return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, ret)
