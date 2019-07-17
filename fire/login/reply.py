@@ -49,6 +49,6 @@ class ImageMsg(Msg):
 
 def DealWithEventMsg(recMsg : receive.EventMsg):
     if recMsg.EventKey == "BIND_ACCOUNT":
-        return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "你在绑定账户")
+        return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "输入\"bind 用户名 密码\"来绑定账户\n如用户名为： 123 密码为：456\n那么输入\"bind 123 456\"")
     else:
         return TextMsg(recMsg.FromUserName, recMsg.ToUserName, "这个功能还莫得开发")
