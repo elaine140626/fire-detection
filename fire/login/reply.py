@@ -82,14 +82,28 @@ class ImageTextMsg(Msg):
         return XmlForm.format(**self.__dict)
 
 
+def getUserId(rec_msg):
+    if models.User.objects.filter(wechat_id=rec_msg.FromUserName).exists():
+        return models.User.objects.get(wechat_id=rec_msg.FromUserName).id
+    else:
+        return ""
+
+
+
 def DealWithEventMsg(rec_msg: receive.EventMsg):
     if rec_msg.EventKey == "BIND_ACCOUNT":
         return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName,
                        "输入\"bind 用户名 密码\"来绑定账户\n如用户名为： 123 密码为：456\n那么输入\"bind 123 456\"(不带引号)")
     elif rec_msg.EventKey == "UN_CHECK":
-        return ImageTextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "articles", "Title", "Description",
-                            "http://g.hiphotos.baidu.com/image/h%3D300/sign=84ec943a20738bd4db21b431918a876c/f7246b600c338744b5a0c49b5f0fd9f9d62aa0f4.jpg",
-                            "https://www.baidu.com")
+        theId = getUserId(rec_msg)
+        if theId != "":
+            user_message = models.User_Message.objects.values('message_id').filter(user_id=theId)
+            user_message_list = [i['message_id'] for i in user_message]
+            message_list = models.Message.objects.exclude(id__in=user_message_list)
+            the_url = message_list[len(message_list)-1].img_url
+            return ImageTextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "articles", "告警图片", "Description",the_url, the_url)
+        else:
+            return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "请先绑定用户")
     else:
         return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "这个功能还莫得开发")
 
