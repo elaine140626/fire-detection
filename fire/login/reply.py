@@ -57,6 +57,8 @@ def DealWithEventMsg(rec_msg: receive.EventMsg):
 
 def DealWithTextMsg(rec_msg: receive.TextMsg):
     content = rec_msg.Content
+    print(content)
+    print(content[:4])
     if content[:4] == "bind":
         return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "bind")
     else:
