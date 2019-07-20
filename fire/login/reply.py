@@ -171,6 +171,7 @@ def send_message(to_user, img_url, serial_number, warning_date, warning_message,
     url = URL_PREF + GetToken()
     print(url)
     data = GetData(to_user, img_url, serial_number, warning_date, warning_message, hint)
+    print(data.encode('utf-8'))
     result = requests.post(url, data.encode('utf-8'), headers=HEADERS)
     return result
 
