@@ -331,7 +331,9 @@ def wechat(request):
             wechat_user = models.WechatUser.objects.all()
             for i in wechat_user:
                 print(i.open_id)
-            return HttpResponse(reply.TextMsg(recMsg.FromUserName, recMsg.ToUserName, "感谢关注公众号。我们将及时为您推送报警信息").send())
+                ret = reply.TextMsg(recMsg.FromUserName, recMsg.ToUserName, "感谢关注公众号。我们将及时为您推送报警信息").send()
+                print(ret)
+                return HttpResponse(ret)
         elif isinstance(recMsg, receive.UnsubscribeEventMsg):
             pass
         elif isinstance(recMsg, receive.TextMsg):
