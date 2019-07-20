@@ -54,3 +54,8 @@ class User_Message(models.Model):
     user_id = models.ForeignKey(to='User', to_field='id', on_delete=models.CASCADE, verbose_name='用户名')
     message_id = models.ForeignKey(to='Message', to_field='id', on_delete=models.CASCADE, verbose_name='信息id')
     true_or_false = models.BooleanField(verbose_name='预警正误')
+
+
+class WechatUser(models.Model):
+    '微信用户'
+    open_id = models.CharField(primary_key=True, max_length=256)

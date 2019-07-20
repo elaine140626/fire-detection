@@ -15,7 +15,13 @@ def parse_xml(data):
     elif msg_type == "image":
         return ImageMsg(xmlData)
     elif msg_type == "event":
-        return EventMsg(xmlData)
+        event = xmlData.find("Event").text
+        if event == "subscribe":
+            return SubScribeEventMsg(xmlData)
+        elif event == "unsubscribe":
+            return UnsubscribeEventMsg(xmlData)
+        elif event == "click":
+            return ClickEventMsg(xmlData)
 
 
 class Msg(object):
@@ -38,8 +44,17 @@ class ImageMsg(Msg):
         self.PicUrl = xmlData.find('PicUrl').text
         self.MediaId = xmlData.find('MediaId').text
 
-class EventMsg(Msg):
+class ClickEventMsg(Msg):
     def __init__(self, xmlData):
         Msg.__init__(self, xmlData)
         self.EventKey = xmlData.find('EventKey').text
+        self.Event = xmlData.find('Event').text
+
+class SubScribeEventMsg(Msg):
+    def __init__(self, xmlData):
+        Msg.__init__(self, xmlData)
+        self.Event = xmlData.find('Event').text
+class UnsubscribeEventMsg(Msg):
+    def __init__(self, xmlData):
+        Msg.__init__(self, xmlData)
         self.Event = xmlData.find('Event').text

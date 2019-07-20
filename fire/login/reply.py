@@ -1,7 +1,13 @@
 import time
 import login.wechat_receive as receive
-import re
 import login.models as models
+import json,os
+import requests
+
+URL_PREF = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="
+HEADERS = {
+    "Content-Type": "application/json"
+}
 
 
 class Msg(object):
@@ -89,8 +95,7 @@ def getUserId(rec_msg):
         return ""
 
 
-
-def DealWithEventMsg(rec_msg: receive.EventMsg):
+def DealWithEventMsg(rec_msg: receive.ClickEventMsg):
     if rec_msg.EventKey == "BIND_ACCOUNT":
         return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName,
                        "输入\"bind 用户名 密码\"来绑定账户\n如用户名为： 123 密码为：456\n那么输入\"bind 123 456\"(不带引号)")
@@ -100,8 +105,9 @@ def DealWithEventMsg(rec_msg: receive.EventMsg):
             user_message = models.User_Message.objects.values('message_id').filter(user_id=theId)
             user_message_list = [i['message_id'] for i in user_message]
             message_list = models.Message.objects.exclude(id__in=user_message_list)
-            the_url = message_list[len(message_list)-1].img_url
-            return ImageTextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "articles", "告警图片", "Description",the_url, the_url)
+            the_url = message_list[len(message_list) - 1].img_url
+            return ImageTextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "articles", "告警图片", "Description", the_url,
+                                the_url)
         else:
             return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, "请先绑定用户")
     else:
@@ -135,3 +141,93 @@ def DealWithTextMsg(rec_msg: receive.TextMsg):
         ret = "无法识别该操作:)"
 
     return TextMsg(rec_msg.FromUserName, rec_msg.ToUserName, ret)
+
+
+def UserAdded(rec_msg: receive.SubScribeEventMsg):
+    if models.WechatUser.objects.filter(open_id=rec_msg.FromUserName).exists():
+        return
+    models.WechatUser.objects.create(open_id=rec_msg.FromUserName)
+
+
+def UserDeled(rec_msg: receive.UnsubscribeEventMsg):
+    if models.WechatUser.objects.filter(open_id=rec_msg.FromUserName).exists():
+        models.WechatUser.objects.filter(open_id=rec_msg.FromUserName).delete()
+
+
+def GetToken():
+    if os.path.exists("token"):
+        f = open("./token", "r")
+        token = f.readline()
+        f.close()
+        if token == "":
+            return "a"
+        else:
+            return token
+    else:
+        return "a"
+
+
+def send_message(to_user, img_url, serial_number, warning_date, warning_message, hint):
+    url = URL_PREF + GetToken()
+    print(url)
+    data = GetData(to_user, img_url, serial_number, warning_date, warning_message, hint)
+    result = requests.post(url, data.encode('utf-8'), headers=HEADERS)
+    return result
+
+
+def GetData(to_user, img_url, serinal_number, time, message, hint):
+    js = '''
+    {
+               "touser":"''' + to_user + '''",
+               "template_id":"4kQKcX7o1pZbJp99g0pdvacBt_ozbdv_JK58BpVK69s",
+               "url":"''' + img_url + ''''",
+               "data":{
+                       "serialnumber": {
+                           "value":"''' + serinal_number + '''",
+                           "color":"#173177"
+                       },
+                       "time":{
+                           "value":"''' + time + ''''",
+                           "color":"#173177"
+                       },
+                       "message": {
+                           "value":"''' + message + '''",
+                           "color":"#173177"
+                       },
+                       "hint": {
+                           "value":"''' + hint + ''''",
+                           "color":"#173177"
+                       }
+               }
+           }
+    '''
+    return js
+
+
+def ReGetToken():
+    res = requests.get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxea2334a522002dc8&secret=8bd4a32def3d70e81847249dc4a86806")
+    ret = json.loads(res.content)
+    print(ret)
+    f = open("./token","w")
+    f.writelines(ret['access_token'])
+    f.close()
+
+
+def WechatSend(to_user, img_url, serial_number, warning_date, warning_message, hint):
+    result = send_message(to_user, img_url, serial_number, warning_date, warning_message, hint)
+    cnt = 5
+    while cnt >0:
+        cnt -=1
+        print(result.content)
+        resd = json.loads(result.content.decode())
+        print(resd['errcode'])
+        if resd['errcode'] == 40001 or resd['errcode'] == 42001:
+            ReGetToken()
+            result = send_message(to_user, img_url, serial_number, warning_date, warning_message, hint)
+        else:
+            break
+
+def WarningMessageToAll(img_url, serial_number, warning_date, warning_message, hint):
+    openIds = models.WechatUser.objects.all()
+    for i in openIds:
+        WechatSend(i.open_id, img_url, serial_number, warning_date, warning_message, hint)

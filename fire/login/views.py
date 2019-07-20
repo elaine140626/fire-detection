@@ -174,6 +174,13 @@ def DealData(request):
                         "warnUrl": "http://188.131.241.21/warning/",
                     }
                     result = requests.post(URL, tmp_data)
+                    img_url = dd.get('image_url')
+                    serial_number = device.serial_number
+                    warning_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    warning_message = "您在经度为 " + str(device.location_x) + " 纬度为 " + str(
+                        device.location_y) + "的设备发出了一条报警信息"
+                    hint = device.hint
+                    reply.WarningMessageToAll(img_url, serial_number, warning_date, warning_message, hint)
                     print(result.content)
 
         return HttpResponse('oddk')
@@ -315,9 +322,18 @@ def wechat(request):
 
         ret = ""
 
-        if isinstance(recMsg, receive.EventMsg):
+        if isinstance(recMsg, receive.ClickEventMsg):
             ret = reply.DealWithEventMsg(recMsg).send()
             return HttpResponse(ret)
+        elif isinstance(recMsg, receive.SubScribeEventMsg):
+            reply.UserAdded(recMsg)
+            print("This is the subscribeEventmsg")
+            wechat_user = models.WechatUser.objects.all()
+            for i in wechat_user:
+                print(i.open_id)
+            return HttpResponse(reply.TextMsg(recMsg.FromUserName, recMsg.ToUserName, "感谢关注公众号。我们将及时为您推送报警信息").send())
+        elif isinstance(recMsg, receive.UnsubscribeEventMsg):
+            pass
         elif isinstance(recMsg, receive.TextMsg):
             ret = reply.DealWithTextMsg(recMsg).send()
             return HttpResponse(ret)
