@@ -171,7 +171,6 @@ def send_message(to_user, img_url, serial_number, warning_date, warning_message,
     url = URL_PREF + GetToken()
     print(url)
     data = GetData(to_user, img_url, serial_number, warning_date, warning_message, hint)
-    print(data.encode('utf-8'))
     result = requests.post(url, data.encode('utf-8'), headers=HEADERS)
     return result
 
@@ -181,7 +180,7 @@ def GetData(to_user, img_url, serinal_number, time, message, hint):
     {
                "touser":"''' + to_user + '''",
                "template_id":"4kQKcX7o1pZbJp99g0pdvacBt_ozbdv_JK58BpVK69s",
-               "url":"''' + img_url + ''''",
+               "url":"''' + img_url + '''",
                "data":{
                        "serialnumber": {
                            "value":"''' + serinal_number + '''",
