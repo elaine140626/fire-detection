@@ -229,5 +229,5 @@ def WechatSend(to_user, img_url, serial_number, warning_date, warning_message, h
 
 def WarningMessageToAll(img_url, serial_number, warning_date, warning_message, hint):
     open_ids = models.User.objects.all()
-    for i in openIds:
+    for i in open_ids:
         WechatSend(i.wechat_id, img_url, serial_number, warning_date, warning_message, hint)
