@@ -87,20 +87,22 @@
 <script>
     var message_total =0,
         flag = false,
-        all = document.getElementsByClassName('all-divs')[0];
+        all = document.getElementsByClassName('all-divs')[0],
+        warning_timer;
 
 
     function makeRed() {
         all.style.backgroundColor = 'red';
-        setTimeout(makeNone, 450);
+        warning_timer = setTimeout(makeNone, 450);
     }
     function makeNone() {
         all.style.backgroundColor = '';
-        setTimeout(makeRed, 750);
+        warning_timer = setTimeout(makeRed, 750);
     }
 
     function get_message_amount() {
         $.get('/messages/',(result)=>{
+            console.log(result);
             if (!flag) {
                 message_total = Number(result);
                 flag = true;
@@ -110,7 +112,7 @@
                 if( tmp > message_total){
                     message_total = tmp;
                     showFloating('有新的告警信息！！请前往报警页面查看！','true','warning');
-                    if(!timer){
+                    if(!warning_timer){
                         makeRed();
                     }
                 }
