@@ -321,6 +321,7 @@ def wechat(request):
         recMsg = receive.parse_xml(content)
 
         ret = ""
+        print(type(recMsg))
 
         if isinstance(recMsg, receive.ClickEventMsg):
             ret = reply.DealWithEventMsg(recMsg).send()
