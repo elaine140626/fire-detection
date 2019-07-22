@@ -324,6 +324,7 @@ def wechat(request):
 
         if isinstance(recMsg, receive.ClickEventMsg):
             ret = reply.DealWithEventMsg(recMsg).send()
+            print(ret)
             return HttpResponse(ret)
         elif isinstance(recMsg, receive.SubScribeEventMsg):
             reply.UserAdded(recMsg)
