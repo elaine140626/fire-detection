@@ -21,7 +21,7 @@ def parse_xml(data):
             return SubScribeEventMsg(xmlData)
         elif event == "unsubscribe":
             return UnsubscribeEventMsg(xmlData)
-        elif event == "click":
+        elif event == "CLICK":
             return ClickEventMsg(xmlData)
 
 
