@@ -16,11 +16,12 @@ def parse_xml(data):
         return ImageMsg(xmlData)
     elif msg_type == "event":
         event = xmlData.find("Event").text
+        print(event)
         if event == "subscribe":
             return SubScribeEventMsg(xmlData)
         elif event == "unsubscribe":
             return UnsubscribeEventMsg(xmlData)
-        elif event == "click":
+        elif event == "CLICK":
             return ClickEventMsg(xmlData)
 
 
