@@ -6,6 +6,7 @@
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% endblock %}
 
 {% block main_body %}
@@ -27,7 +28,7 @@
                         </el-form-item>
                         <el-divider></el-divider>
                         <el-form-item label="微信ID">
-                            <el-input v-model="form.wechat" size="small"></el-input>
+                            <el-input v-model="form.wechatOpenId" size="small"></el-input>
                         </el-form-item>
                         <el-divider></el-divider>
                         <el-form-item label="布局设置">
@@ -53,7 +54,7 @@
 {#                            <el-switch v-model="form.delivery"></el-switch>#}
 {#                        </el-form-item>#}
 {#                        <el-form-item label="活动性质">#}
-{#                            <el-checkbox-group v-model="form.type">#}
+{#                            <el-checkbox-group v-model="form.layout">#}
 {#                                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>#}
 {#                                <el-checkbox label="地推活动" name="type"></el-checkbox>#}
 {#                                <el-checkbox label="线下主题活动" name="type"></el-checkbox>#}
@@ -85,31 +86,37 @@
             el: '#app',
             data: function () {
                 return {
-                    url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    srcList: [
-                        'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
-                        'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
-                    ],
                     form: {
-                        name: '',
-                        region: '',
-                        date1: '',
-                        date2: '',
-                        delivery: false,
-                        type: [],
-                        resource: '',
-                        desc: '',
-                        telephone: 123456
+                        telephone: '',
+                        email:'',
+                        wechatOpenId:'',
+                        layout:1,
                     }
                 }
             },
             methods: {
                 onSubmit() {
                     this.$message({
-                        message:"21345",
+                        message:this.form,
                         type: "success"
                     })
                 }
+            },
+            mounted(){
+                axios.get('/user_config')
+                    .then((res)=>{
+                        console.log(res);
+                        this.form.layout       = res.data.layout || "";
+                        this.form.telephone    = res.data.telephone || '';
+                        this.form.email        = res.data.email || "";
+                        this.form.wechatOpenId = res.data.wechatOpenId || "";
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                    })
+                    .finally(()=>{
+                        console.log("Im finally")
+                    });
             }
         })
     </script>

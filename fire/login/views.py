@@ -347,3 +347,31 @@ def wechat(request):
         return HttpResponse(ret)
 
     return HttpResponse("213244")
+
+
+def getUserConf(request):
+    response = HttpResponse()
+
+    if not request.session.get('is_login', None):
+        response.status_code = 400
+        response.content = '没有登陆'
+        return response
+
+    if request.method == "GET":
+
+        user_name = request.session["user_name"]
+        user = models.User.objects.get(name=user_name)
+
+        response.content = json.dumps({
+            "layout":       user.layout,
+            "email":        user.email,
+            "wechatOpenId": user.wechat_id,
+            "telephone":    user.phone
+        })
+        response.status_code = 200
+
+    else:
+        response.status_code = 400
+        response.content = "Wrong Mehod"
+
+    return response

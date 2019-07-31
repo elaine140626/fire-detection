@@ -30,5 +30,6 @@ urlpatterns = [
     path('data', views.DealData),
     path('conf/', views.conf),
     path('wechat', views.wechat),
+    path('user_config',views.getUserConf),
     path('', views.empty_redirect),
 ]
