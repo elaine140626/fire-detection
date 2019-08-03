@@ -5,3 +5,7 @@ fire/fire/__pycache__/
 **/db.sqlite3
 *.docx
 **/token
+/fire/frontend/node_modules/
+/fire/frontend/test/
+/fire/frontend/.DS_Store
+/fire/frontend/.vscode
