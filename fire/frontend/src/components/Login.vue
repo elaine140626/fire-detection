@@ -1,26 +1,16 @@
 <template>
-  <blur-card v-bind:thePadding="30">
+  <el-card>
     <h2>登录</h2>
-<!--    <el-form label-position="top">-->
-<!--      <el-form-item label="用户名">-->
-<!--        <el-input></el-input>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="密码">-->
-<!--        <el-input></el-input>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
-    <el-form label-position="left" label-width="80px">
-      <el-form-item label="名称">
-        <el-input ></el-input>
+    <el-form label-position="left">
+      <el-form-item label="用户名">
+        <el-input v-model="user"></el-input>
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-input ></el-input>
-      </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input></el-input>
+      <el-form-item label="密码">
+        <el-input show-password v-model="password"></el-input>
       </el-form-item>
     </el-form>
-  </blur-card>
+    <el-button type="primary" @click="OnLogin">登录</el-button>
+  </el-card>
 </template>
 
 <script>
@@ -29,6 +19,18 @@ export default {
   name: 'Login',
   components: {
     BlurCard
+  },
+  data () {
+    return {
+      user: '',
+      password: ''
+    }
+  },
+  methods: {
+    OnLogin () {
+      console.log(this.user)
+      console.log(this.password)
+    }
   }
 }
 </script>
@@ -36,5 +38,14 @@ export default {
 <style scoped>
 .el-input{
   width: 400px;
+}
+.el-card {
+  background: rgba(255, 255, 255, .3);
+  border: 0;
+  padding: 10px 30px;
+}
+.el-form-item__label {
+  color: #f3f3f3;
+  font-size: 20px;
 }
 </style>
