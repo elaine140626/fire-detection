@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import TemplateView
 from login import views
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
     path('data', views.DealData),
     path('conf/', views.conf),
     path('wechat', views.wechat),
-    path('user_config',views.getUserConf),
-    path('', views.empty_redirect),
+    path('user_config', views.getUserConf),
+    path('check_user', views.new_login),
+    path('', TemplateView.as_view(template_name='index.html')),
 ]

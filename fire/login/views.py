@@ -363,15 +363,137 @@ def getUserConf(request):
         user = models.User.objects.get(name=user_name)
 
         response.content = json.dumps({
-            "layout":       user.layout,
-            "email":        user.email,
+            "layout": user.layout,
+            "email": user.email,
             "wechatOpenId": user.wechat_id,
-            "telephone":    user.phone
+            "telephone": user.phone
         })
         response.status_code = 200
 
     else:
         response.status_code = 400
-        response.content = "Wrong Mehod"
+        response.content = "Wrong Method"
+
+    return response
+
+
+def get_messages(request):
+    response = HttpResponse()
+
+    if not check_is_login(request):
+        response.status_code = 400
+        response.content = 'Not Login'
+        return response
+
+    if request.method == "GET":
+        limit = generate_parameter(request, "limit")
+        offset = generate_parameter(request, "offset")
+        type = generate_parameter(requests, "type")
+        limit = int(limit)
+        offset = int(offset)
+
+        if type == "unread":
+            pass
+
+        user_name = get_user_name(request)
+
+        print(user_name)
+
+    else:
+        response.status_code = 400
+        response.content = "Wrong Method"
+
+
+def check_is_login(request):
+    # return the status of login
+    return request.session.get('is_login', None)
+
+
+def get_user_name(r):
+    return r.session['user_name']
+
+
+def generate_parameter(request, key):
+    # return the params of the request
+
+    if request.method == "GET":
+        return request.GET.get(key)
+
+    elif request.method == "POST":
+        return request.POST.get(key)
+
+    return None
+
+
+def get_all_messages(limit=-1, offset=0) -> []:
+    if limit == -1:
+        return models.Message.objects.all()[offset:]
+    else:
+        return models.Message.objects.all()[offset:offset + limit]
+
+
+def get_messages_unread_by_user_name(user_name: str, limit: int = - 1, offset: int = 0) -> []:
+    # return the message unread by the user
+    user = get_user_by_user_name(user_name)
+    user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
+    user_message_list = [i['message_id'] for i in user_message]
+    if limit == -1:
+        return models.Message.objects.exclude(id__in=user_message_list)[offset:]
+    else:
+        return models.Message.objects.exclude(id__in=user_message_list)[offset:offset + limit]
+
+
+def get_user_by_user_name(user_name: str) -> models.User:
+    if not models.User.objects.filter(name=user_name).exists():
+        raise Exception("User not exists", user_name)
+
+    return models.User.objects.get(name=user_name)
+
+
+def check_is_login(request):
+    response = HttpResponse()
+    if request.session['is_login']:
+        response.status_code = 200
+        response.content = "Has Login"
+    else:
+        response.status_code = 400
+        response.content = 'Not login'
+    return response
+
+
+def new_login(request):
+
+    response = HttpResponse()
+
+    if check_is_login(request):
+        response.status_code = 200
+        response.content = '已登录'
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        params = data.get('params')
+        user_name = params.get('username')
+        password = params.get('password')
+        # user_name = request.GET.get('param')
+        # password  = request.GET.get('password')
+
+        try:
+            user = get_user_by_user_name(user_name)
+            if user.password == password:
+                request.session['is_login'] = True
+                request.session['username'] = user_name
+                request.session['user_id'] = user.id
+                response.status_code = 200
+                response.content = "欢迎你\n" + user.name
+            else:
+                response.status_code = 400
+                response.content = '用户名或密码不正确'
+        except "User not exists":
+            response.status_code = 400
+            response.content = 'User not exists'
+
+    else:
+        response.status_code = 400
+        response.content = "Wrong method"
 
     return response

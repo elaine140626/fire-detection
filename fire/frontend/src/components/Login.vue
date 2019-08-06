@@ -28,8 +28,23 @@ export default {
   },
   methods: {
     OnLogin () {
-      console.log(this.user)
-      console.log(this.password)
+      this.$axios.post('check_user', {
+        params: {
+          username: this.user,
+          password: this.password
+        }
+      })
+        .then(() => {
+          this.$router.push('test')
+        })
+        .catch(() => {
+          this.$notify({
+            title: '失败',
+            message: '登录失败，请重新核对账号密码',
+            type: 'warning',
+            duration: 2500
+          })
+        })
     }
   }
 }
@@ -40,7 +55,7 @@ export default {
   width: 400px;
 }
 .el-card {
-  background: rgba(255, 255, 255, .3);
+  background: rgba(255, 255, 255, .9);
   border: 0;
   padding: 10px 30px;
 }
