@@ -34,13 +34,19 @@ export default {
           password: this.password
         }
       })
-        .then(() => {
+        .then((e) => {
+          this.$notify({
+            title: '成功',
+            message: e.data,
+            type: 'success',
+            duration: 2500
+          })
           this.$router.push('test')
         })
-        .catch(() => {
+        .catch((e) => {
           this.$notify({
             title: '失败',
-            message: '登录失败，请重新核对账号密码',
+            message: e.data,
             type: 'warning',
             duration: 2500
           })

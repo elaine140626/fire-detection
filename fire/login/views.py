@@ -452,9 +452,9 @@ def get_user_by_user_name(user_name: str) -> models.User:
 
 def check_is_login(request):
     response = HttpResponse()
-    if request.session['is_login']:
+    if request.session.get('is_login'):
         response.status_code = 200
-        response.content = "Has Login"
+        response.content = request.session['name']
     else:
         response.status_code = 400
         response.content = 'Not login'
@@ -481,7 +481,7 @@ def new_login(request):
             user = get_user_by_user_name(user_name)
             if user.password == password:
                 request.session['is_login'] = True
-                request.session['username'] = user_name
+                request.session['user_name'] = user_name
                 request.session['user_id'] = user.id
                 response.status_code = 200
                 response.content = "欢迎你\n" + user.name
