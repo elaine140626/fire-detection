@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container style="height: 100%;">
-      <el-header>
+      <el-header style="height: auto;">
         <base-header></base-header>
       </el-header>
       <el-main style="display: flex;justify-content: center;align-items: center;">
