@@ -12,7 +12,7 @@
         </h2>
       </el-col>
       <el-col  class="hidden-sm-and-down">
-        <el-button @click="routeTo('warning')">
+        <el-button @click="routeTo('overview')">
           系统总览
         </el-button>
         <el-button @click="routeTo('monitor')">
