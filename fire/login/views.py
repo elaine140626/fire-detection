@@ -450,7 +450,7 @@ def get_user_by_user_name(user_name: str) -> models.User:
     return models.User.objects.get(name=user_name)
 
 
-def check_is_login(request):
+def check_is_login_and_get_username(request):
     response = HttpResponse()
     if request.session.get('is_login'):
         response.status_code = 200

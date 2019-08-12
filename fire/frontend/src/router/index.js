@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import HelloWorld from '../components/HelloWorld'
 import Overview from '../components/Overview'
+import Monitor from '../components/Monitor'
 
 Vue.use(Router)
 
@@ -21,6 +22,11 @@ export default new Router({
       path: '/test',
       name: 'Test',
       component: HelloWorld
+    },
+    {
+      path: '/monitor',
+      name: 'Monitor',
+      component: Monitor
     },
     {
       path: '/overview',

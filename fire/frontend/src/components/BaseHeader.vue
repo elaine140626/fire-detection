@@ -12,13 +12,13 @@
         </h2>
       </el-col>
       <el-col  class="hidden-sm-and-down">
-        <el-button>
+        <el-button @click="routeTo('warning')">
           系统总览
         </el-button>
-        <el-button>
+        <el-button @click="routeTo('monitor')">
           监控可视化
         </el-button>
-        <el-button>
+        <el-button @click="routeTo('warning')">
           告警分析
         </el-button>
         <el-button>
@@ -27,7 +27,7 @@
         <el-button>
           推送系统
         </el-button>
-        <el-button>
+        <el-button @click="routeTo('config')">
           系统配置
         </el-button>
       </el-col>
@@ -51,12 +51,12 @@
             <i class="el-icon-menu"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-info" command="f">系统总览</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-video-camera">监控可视化</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit-outline">告警分析</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-info" command="f" @click="routeTo('overview')">系统总览</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-video-camera" @click="routeTo('monitor')">监控可视化</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-edit-outline" @click="routeTo('warning')">告警分析</el-dropdown-item>
             <el-dropdown-item icon="el-icon-notebook-1">日志管理</el-dropdown-item>
             <el-dropdown-item icon="el-icon-connection">推送系统</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-setting">系统配置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click="routeTo('config')">系统配置</el-dropdown-item>
             <el-dropdown-item icon="el-icon-switch-button">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -71,6 +71,11 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    routeTo (loc) {
+      this.$router.push(loc)
     }
   }
 }
