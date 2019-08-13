@@ -8,6 +8,7 @@ import json
 import hashlib
 import login.wechat_receive as receive
 import login.reply as reply
+from login import session
 
 # Create your views here.
 
@@ -17,12 +18,15 @@ URL = "http://140.143.244.242:8080/weixin/wxsend/sendTemp"
 
 
 def warning(request):
+    print("This is the type")
+    print(type(request))
     ret_vars = {}
 
-    if request.session.get('is_login', None):
-        ret_vars['username'] = request.session['user_name']
+    if session.check_is_login(request):
+        user_name = session.get_user_name(request)
+        ret_vars['username'] = user_name
 
-        user = models.User.objects.get(name=request.session['user_name'])
+        user = models.User.objects.get(name=user_name)
         user_message = models.User_Message.objects.values('message_id', 'true_or_false').filter(user_id=user.id)
         print(user_message)
         user_message_dict = {}
@@ -56,10 +60,11 @@ def warning(request):
 def overview(request):
     ret_vars = {}
 
-    if request.session.get('is_login', None):
-        ret_vars['username'] = request.session['user_name']
+    if session.check_is_login(request):
+        user_name = session.get_user_name(request)
+        ret_vars['username'] = user_name
 
-        user = models.User.objects.get(name=request.session['user_name'])
+        user = models.User.objects.get(name=user_name)
         user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
         user_message_list = [i['message_id'] for i in user_message]
         message_list = models.Message.objects.exclude(id__in=user_message_list)
@@ -85,9 +90,10 @@ def overview(request):
 def monitor(request):
     ret_vars = {}
 
-    if request.session.get('is_login', None):
-        ret_vars['username'] = request.session['user_name']
-        user = models.User.objects.get(name=request.session['user_name'])
+    if session.check_is_login(request):
+        user_name = session.get_user_name(request)
+        ret_vars['username'] = user_name
+        user = models.User.objects.get(name=user_name)
         video_list = models.Video.objects.filter(user_id=user.id)
         ret_vars['video_list'] = serializers.serialize('json', video_list)
         ret_vars['default_layout'] = user.layout
@@ -140,7 +146,7 @@ def empty_redirect(request):
 def logout(request):
     # the logout function
 
-    if not request.session.get('is_login', None):
+    if not session.check_is_login(request):
         return redirect('/login/')
 
     request.session.flush()
@@ -192,7 +198,7 @@ def DealData(request):
 def dealTrue(request):
     response = HttpResponse()
 
-    if not request.session.get('is_login', None):
+    if not session.check_is_login(request):
         response.status_code = 400
         response.content = '没有登陆'
         return response
@@ -202,7 +208,7 @@ def dealTrue(request):
         id_array = request.POST['data'].split(',')
 
         print(id_array)
-        user = models.User.objects.get(name=request.session['user_name'])
+        user = models.User.objects.get(name=session.get_user_name(request))
 
         try:
             for id in id_array:
@@ -231,7 +237,7 @@ def dealTrue(request):
 def dealFalse(request):
     response = HttpResponse()
 
-    if not request.session.get('is_login', None):
+    if not session.check_is_login(request):
         response.status_code = 400
         response.content = '没有登陆'
         return response
@@ -241,7 +247,7 @@ def dealFalse(request):
         id_array = request.POST['data'].split(',')
 
         print(id_array)
-        user = models.User.objects.get(name=request.session['user_name'])
+        user = models.User.objects.get(name=session.get_user_name(request))
 
         try:
 
@@ -271,7 +277,7 @@ def dealFalse(request):
 def MessageAmount(request):
     response = HttpResponse()
 
-    if not request.session.get('is_login', None):
+    if not session.check_is_login(request):
         response.status_code = 400
         response.content = '没有登陆'
         return response
@@ -285,7 +291,7 @@ def MessageAmount(request):
 def conf(request):
     ret_vars = {}
 
-    if request.session.get('is_login', None):
+    if session.check_is_login(request):
         ret_vars['username'] = request.session['user_name']
 
         return render(request, 'conf.html', ret_vars)
@@ -352,7 +358,7 @@ def wechat(request):
 def getUserConf(request):
     response = HttpResponse()
 
-    if not request.session.get('is_login', None):
+    if not session.check_is_login(request):
         response.status_code = 400
         response.content = '没有登陆'
         return response
@@ -380,7 +386,7 @@ def getUserConf(request):
 def get_messages(request):
     response = HttpResponse()
 
-    if not check_is_login(request):
+    if not session.check_is_login(request):
         response.status_code = 400
         response.content = 'Not Login'
         return response
@@ -402,15 +408,6 @@ def get_messages(request):
     else:
         response.status_code = 400
         response.content = "Wrong Method"
-
-
-def check_is_login(request):
-    # return the status of login
-    return request.session.get('is_login', None)
-
-
-def get_user_name(r):
-    return r.session['user_name']
 
 
 def generate_parameter(request, key):
@@ -450,50 +447,4 @@ def get_user_by_user_name(user_name: str) -> models.User:
     return models.User.objects.get(name=user_name)
 
 
-def check_is_login_and_get_username(request):
-    response = HttpResponse()
-    if request.session.get('is_login'):
-        response.status_code = 200
-        response.content = request.session['name']
-    else:
-        response.status_code = 400
-        response.content = 'Not login'
-    return response
 
-
-def new_login(request):
-
-    response = HttpResponse()
-
-    if check_is_login(request):
-        response.status_code = 200
-        response.content = '已登录'
-
-    if request.method == "POST":
-        data = json.loads(request.body)
-        params = data.get('params')
-        user_name = params.get('username')
-        password = params.get('password')
-        # user_name = request.GET.get('param')
-        # password  = request.GET.get('password')
-
-        try:
-            user = get_user_by_user_name(user_name)
-            if user.password == password:
-                request.session['is_login'] = True
-                request.session['user_name'] = user_name
-                request.session['user_id'] = user.id
-                response.status_code = 200
-                response.content = "欢迎你\n" + user.name
-            else:
-                response.status_code = 400
-                response.content = '用户名或密码不正确'
-        except "User not exists":
-            response.status_code = 400
-            response.content = 'User not exists'
-
-    else:
-        response.status_code = 400
-        response.content = "Wrong method"
-
-    return response
