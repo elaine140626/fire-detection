@@ -1,7 +1,8 @@
-from login import session, models
+from login import session, models, utils, status_code
 from login import user as User
 from django.core.handlers import wsgi
 from django.http import HttpResponse
+from django import db
 import json
 
 
@@ -14,9 +15,9 @@ def messages(request: wsgi.WSGIRequest):
         the_type = request.GET.get('type', 'all')
         response.status_code = 200
         if the_type == 'all':
-            response.content = json.dumps(get_all_messages_by_user_name(user_name, limit, offset))
+            utils.serve_data_response(response, get_all_messages_by_user_name(user_name, limit, offset))
         elif the_type == 'unread':
-            response.content = json.dumps(get_messages_unread_by_user_name(user_name, limit, offset))
+            utils.serve_data_response(response, get_messages_unread_by_user_name(user_name, limit, offset))
         else:
             response.content = "wrong parameter 'type' "
             response.status_code = 400
@@ -24,6 +25,24 @@ def messages(request: wsgi.WSGIRequest):
     elif request.method == "POST":
         data = json.loads(request.body)
         params = data.get('params')
+        if not isinstance(params, dict):
+            response.content = "wrong prameters params"
+            response.status_code = 400
+            return
+        messages_id = params.get('id')
+        try:
+            if messages_id is not None:
+                if models.Message.objects.filter(id=messages_id).exists():
+                    models.Message.objects.filter(id=messages_id).update(content=params.get('content'),
+                                                                         img_url=params.get('img_url'))
+        except db.DatabaseError:
+            utils.serve_error_response(response, status_code.MESSAGE_MODEL_CANNOT_UPDATE, str(db.DatabaseError))
+        except:
+            utils.serve_error_response(response, status_code.MESSAGE_MODEL_CANNOT_UPDATE, "Error: post message")
+        else:
+            utils.serve_data_response(response, params.get('id'))
+
+    return response
 
 
 def get_all_messages(limit=-1, offset=0) -> []:
@@ -39,9 +58,21 @@ def get_messages_unread_by_user_name(user_name: str, limit: int = - 1, offset: i
     user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
     user_message_list = [i['message_id'] for i in user_message]
     if limit == -1:
-        return models.Message.objects.exclude(id__in=user_message_list)[offset:]
+        res = models.Message.objects.exclude(id__in=user_message_list)[offset:]
     else:
-        return models.Message.objects.exclude(id__in=user_message_list)[offset:offset + limit]
+        res = models.Message.objects.exclude(id__in=user_message_list)[offset:offset + limit]
+
+    ret = []
+    for i in res:
+        ret.append({
+            'id': i.id,
+            'content': i.content,
+            'img_url': i.img_url,
+            'device_number': i.serial_number.id,
+            'device_hint': i.serial_number.hint,
+            'c_time': i.c_time.strftime('%Y-%m-%d')
+        })
+    return ret
 
 
 def get_all_messages_by_user_name(user_name: str, limit: int = -1, offset: int = 0) -> []:
