@@ -2,6 +2,7 @@ import login.models as models
 from login import session
 import json
 from django.http import HttpResponse
+from django.core.handlers import wsgi
 
 
 def check_is_login_and_get_username(request):
@@ -15,7 +16,7 @@ def check_is_login_and_get_username(request):
     return response
 
 
-def new_login(request):
+def login(request: wsgi.WSGIRequest):
     response = HttpResponse()
 
     if session.check_is_login(request):
@@ -23,6 +24,7 @@ def new_login(request):
         response.content = '已登录'
 
     if request.method == "POST":
+        print(request.body)
         data = json.loads(request.body)
         params = data.get('params')
         user_name = params.get('username')
