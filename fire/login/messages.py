@@ -45,6 +45,33 @@ def messages(request: wsgi.WSGIRequest):
     return response
 
 
+def approve_message(request: wsgi.WSGIRequest):
+    response = HttpResponse()
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        params = data.get('params')
+        if not isinstance(params, dict):
+            response.content = 'wrong parameters : params'
+            response.status_code = 400
+        message_ids = params.get('message_ids')
+        approve_status = params.get('approve_status')
+        if message_ids is not None and approve_status is not None and not isinstance(approve_status, bool):
+            user_name = session.get_user_name(request)
+            user = User.get_user_by_user_name(user_name)
+            for message_id in message_ids:
+                if models.User_Message.objects.filter(user_id=user.id, message_id=message_id).exists():
+                    models.User_Message.objects.filter(user_id=user.id, message_id=message_id).update(
+                        true_or_false=approve_status)
+                else:
+                    models.User_Message.objects.create(user_id=user.id, message_id=message_id,
+                                                       true_or_false=approve_status)
+
+        else:
+            response.content = 'wrong parameters : message_ids or approve_status is empty or incorrect'
+            response.status_code = 400
+
+
 def get_all_messages(limit=-1, offset=0) -> []:
     if limit == -1:
         return models.Message.objects.all()[offset:]
