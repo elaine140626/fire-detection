@@ -2,3 +2,8 @@
 # middleware
 
 LOGIN_FILTER_NOT_LOGIN = 10001
+
+
+# message
+
+MESSAGE_MODEL_CANNOT_UPDATE = 10101
