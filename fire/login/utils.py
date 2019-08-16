@@ -17,3 +17,8 @@ def serve_error_response(response: HttpResponse, code: int, msg: str):
         "code": code,
         "msg": msg
     }, ensure_ascii=False).decode("utf-8").encode("gb2312")
+
+
+def serve_400_response(response: HttpResponse,msg: str):
+    response.status_code = 400
+    response.content = msg
