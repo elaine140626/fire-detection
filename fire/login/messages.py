@@ -28,7 +28,7 @@ def messages(request: wsgi.WSGIRequest):
         if not isinstance(params, dict):
             response.content = "wrong prameters params"
             response.status_code = 400
-            return
+            return response
         messages_id = params.get('id')
         try:
             if messages_id is not None:
