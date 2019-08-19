@@ -28,13 +28,12 @@ export default {
   },
   methods: {
     OnLogin () {
-      this.$axios.post('check_user', {
-        params: {
-          username: this.user,
-          password: this.password
-        }
+      this.$axios.post('http://127.0.0.1:8000/api/user/login/', {
+        username: this.user,
+        password: this.password
       })
         .then((e) => {
+          console.log(e)
           this.$notify({
             title: '成功',
             message: e.data,

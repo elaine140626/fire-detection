@@ -9,7 +9,22 @@
       <div id="install-chart"></div>
     </el-card>
     <el-card class="overview-map-card">
-      <div id="map-chart"></div>
+      <el-popover
+        ref="popover-message"
+        v-model="popoverVisibel"
+        trigger="mannul">
+        <el-card>
+          <h4>设备序列号</h4>
+          {{deviceOnShow.serial_number}}
+          <h4>提示信息</h4>
+          {{deviceOnShow.hint}}
+          <h4>视频地址</h4>
+          {{deviceOnShow.video_url}}
+          <h4>经纬度</h4>
+          ({{deviceOnShow.location_x}}, {{deviceOnShow.location_y}})
+        </el-card>
+        <div id="map-chart" slot="reference" ></div>
+      </el-popover>
     </el-card>
     <el-card class="overview-amount-card" slot="header">
       <span>装置数量</span>
@@ -25,6 +40,11 @@
     <el-card class="overview-img-card">
       <span>预警图片</span>
     </el-card>
+    <el-drawer
+      title="设备实时监控"
+      :visible.sync="drawer"
+      size="85%"
+      direction="btt"></el-drawer>
   </div>
 </template>
 
@@ -35,6 +55,16 @@ export default {
   name: 'Overview',
   data () {
     return {
+      drawer: false,
+      device: [],
+      urlHead: 'http://127.0.0.1:8000',
+      deviceOnShow: {
+        'serial_number': undefined,
+        'hint': undefined,
+        'location_x': undefined,
+        'location_y': undefined,
+        'video_url': undefined
+      }
     }
   },
   mounted: function () {
@@ -202,12 +232,49 @@ export default {
       // mapScipt.src = 'http://api.map.baidu.com/api?v=3.0&ak=QsGnMSGuvCa3B680i1DHAL3cDG8COE3e'
       // document.body.appendChild(mapScipt)
     }
+    this.$refs['popover-message'].doClose()
     var map = new BMap.Map('map-chart')
     var point = new BMap.Point(120.697792, 36.369133)
     map.centerAndZoom(point, 15)
+
+    this.$axios.get(this.urlHead + '/api/devices/all')
+      .catch(() => {
+        this.$notify({
+          message: '无法获取设备信息',
+          type: 'warning'
+        })
+      })
+      .then((e) => {
+        this.device = e.data.data
+        console.log(e)
+        for (let i = 0; i < this.device.length; i++) {
+          let thePoint = new BMap.Point(this.device[i]['location_x'], this.device[i]['location_y'])
+          let theMarker = new BMap.Marker(thePoint)
+
+          map.addOverlay(theMarker)
+
+          theMarker.addEventListener('mouseover', () => {
+            console.log(123)
+            this.deviceOnShow = this.device[i]
+            this.$refs['popover-message'].doShow()
+            console.log(this.$refs['popover-message'])
+          })
+
+          theMarker.addEventListener('mouseout', () => {
+            this.$refs['popover-message'].doClose()
+          })
+
+          theMarker.addEventListener('click', () => {
+            this.ShowVideo(this.device[i].video_url)
+          })
+        }
+      })
   },
   methods: {
     ResizeChart () {
+    },
+    ShowVideo (videoUrl) {
+      this.drawer = true
     }
   }
 }
