@@ -26,9 +26,8 @@ def login(request: wsgi.WSGIRequest):
     if request.method == "POST":
         print(request.body)
         data = json.loads(request.body)
-        params = data.get('params')
-        user_name = params.get('username')
-        password = params.get('password')
+        user_name = data.get('username')
+        password = data.get('password')
         # user_name = request.GET.get('param')
         # password  = request.GET.get('password')
 
@@ -41,7 +40,7 @@ def login(request: wsgi.WSGIRequest):
             else:
                 response.status_code = 400
                 response.content = '用户名或密码不正确'
-        except "User not exists":
+        except models.User.DoesNotExist:
             response.status_code = 400
             response.content = 'User not exists'
 
@@ -53,7 +52,4 @@ def login(request: wsgi.WSGIRequest):
 
 
 def get_user_by_user_name(user_name: str) -> models.User:
-    if not models.User.objects.filter(name=user_name).exists():
-        raise Exception("User not exists", user_name)
-
     return models.User.objects.get(name=user_name)
