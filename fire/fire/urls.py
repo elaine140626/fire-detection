@@ -17,8 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from login import views
-from login import user
-from login import messages
+from login import user, messages, device, video
 
 user_patterns = [
     path('login/', user.login),
@@ -27,9 +26,19 @@ message_patterns = [
     path('', messages.messages),
 ]
 
+device_patterns = [
+    path('', device.device_controller),
+    path('all/', device.get_all_device_controller)
+]
+
+video_patterns = [
+    path('', video.videos_controller)
+]
+
 api_patterns = [
     path('user/', include(user_patterns)),
-    path('messages/', include(message_patterns))
+    path('messages/', include(message_patterns)),
+    path('devices/', include(device_patterns))
 ]
 urlpatterns = [
     path('admin/', admin.site.urls),
