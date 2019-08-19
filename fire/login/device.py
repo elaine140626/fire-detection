@@ -28,7 +28,7 @@ def get_all_device_controller(request: wsgi.WSGIRequest):
         ret = []
         for d in devices:
             ret.append(convert_models_device_to_dict(d))
-        utils.serve_data_response(ret)
+        utils.serve_data_response(response, ret)
     else:
         response.status_code = 400
         response.content = "wrong request method"
