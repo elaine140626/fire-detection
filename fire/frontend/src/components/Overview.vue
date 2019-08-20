@@ -11,8 +11,7 @@
     <el-card class="overview-map-card">
       <el-popover
         ref="popover-message"
-        v-model="popoverVisibel"
-        trigger="mannul">
+        trigger="manual">
         <el-card>
           <h4>设备序列号</h4>
           {{deviceOnShow.serial_number}}
@@ -41,10 +40,16 @@
       <span>预警图片</span>
     </el-card>
     <el-drawer
+      ref="videoDrawer"
       title="设备实时监控"
       :visible.sync="drawer"
       size="85%"
-      direction="btt"></el-drawer>
+      :destroy-on-close="true"
+      @opened="InitVideo"
+      direction="btt">
+      <div id="myPlayer" controls  playsInline webkit-playsinline>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -57,14 +62,16 @@ export default {
     return {
       drawer: false,
       device: [],
-      urlHead: 'http://127.0.0.1:8000',
+      messages: [],
+      urlHead: '',
       deviceOnShow: {
         'serial_number': undefined,
         'hint': undefined,
         'location_x': undefined,
         'location_y': undefined,
         'video_url': undefined
-      }
+      },
+      videoOnShow: ''
     }
   },
   mounted: function () {
@@ -269,12 +276,47 @@ export default {
           })
         }
       })
+    this.GetMessages()
   },
   methods: {
     ResizeChart () {
     },
     ShowVideo (videoUrl) {
       this.drawer = true
+      this.videoOnShow = videoUrl
+    },
+    InitVideo () {
+      var myPlayer = document.getElementById('myPlayer')
+      var source = document.createElement('source')
+      source.setAttribute('src', this.videoOnShow)
+      myPlayer.appendChild(source)
+
+      // eslint-disable-next-line no-undef
+      console.log(EZUIPlayer)
+      // eslint-disable-next-line no-undef
+      let thePlayer = new EZUIPlayer('myPlayer')
+      thePlayer.play()
+    },
+    GetMessages () {
+      this.$axios.get(this.urlHead + '/api/messages/?limit=10&type=all', {withCredentials: true})
+        .then((e) => {
+          console.log(e.data)
+          if (e.data.code === 0) {
+            this.messages = e.data.data
+          } else {
+            this.$notify({
+              message: e.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+          this.$notify({
+            message: '无法获取报警信息',
+            type: 'warning'
+          })
+        })
     }
   }
 }
