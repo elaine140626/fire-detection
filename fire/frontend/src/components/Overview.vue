@@ -6,9 +6,10 @@
     </el-card>
     <el-card class="overview-install-card" slot="header">
       <span>设备在线</span>
-      <div id="install-chart"></div>
+      <div id="install-chart">
+      </div>
     </el-card>
-    <el-card class="overview-map-card">
+    <el-card class="overview-map-card" style="margin: 0; padding: 0;">
       <el-popover
         ref="popover-message"
         trigger="manual">
@@ -27,7 +28,9 @@
     </el-card>
     <el-card class="overview-amount-card" slot="header">
       <span>装置数量</span>
-      <div id="amount-chart"></div>
+      <div id="amount-chart" class="flex-center">
+        <el-progress :percentage="messagePercentage" :format="messageFormat" status="warning" style="height:auto;"></el-progress>
+      </div>
     </el-card>
     <el-card class="overview-wheather-card" slot="header">
       <span>微气象</span>
@@ -35,9 +38,30 @@
     </el-card>
     <el-card class="overview-message-card" slot="header">
       <span>报警信息</span>
+      <el-carousel
+        @change="HandleChange"
+        ref="messageCarousel"
+        height="30%"
+        :autoplay="false"
+        type="card"
+        direction="vertical"
+        indicator-position="outside" >
+        <el-carousel-item v-for="message in messages" :key="message.id" class="flex-center">
+          {{message.content}}
+          <span style="font-size: 13px;">{{message.c_time}}</span>
+        </el-carousel-item>
+      </el-carousel>
     </el-card>
     <el-card class="overview-img-card">
       <span>预警图片</span>
+      <el-carousel @change="HandleChange" :autoplay="autoPlay" ref="imgCarousel">
+        <el-carousel-item v-for="message in messages" :key="message.id" class="flex-center">
+          <el-image
+            :src="message.img_url"
+            style="height: 80%;"
+            fit="contain"></el-image>
+        </el-carousel-item>
+      </el-carousel>
     </el-card>
     <el-drawer
       ref="videoDrawer"
@@ -62,8 +86,9 @@ export default {
     return {
       drawer: false,
       device: [],
-      messages: [],
-      urlHead: '',
+      messages: [{'id': 1, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428914.6071951.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 2, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428914.6071951.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 3, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428915.6183162.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 4, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428921.801521.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 5, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428922.8135169.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 6, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 7, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428923.8265727.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 8, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428924.8973463.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 9, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428925.974638.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 10, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428928.0553596.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}],
+      urlHead: 'http://127.0.0.1:8000',
+      // urlHead: '',
       deviceOnShow: {
         'serial_number': undefined,
         'hint': undefined,
@@ -71,7 +96,10 @@ export default {
         'location_y': undefined,
         'video_url': undefined
       },
-      videoOnShow: ''
+      videoOnShow: '',
+      autoPlay: true,
+      messagePercentage: 100,
+      devicePercentage: 100
     }
   },
   mounted: function () {
@@ -261,7 +289,6 @@ export default {
           map.addOverlay(theMarker)
 
           theMarker.addEventListener('mouseover', () => {
-            console.log(123)
             this.deviceOnShow = this.device[i]
             this.$refs['popover-message'].doShow()
             console.log(this.$refs['popover-message'])
@@ -317,6 +344,10 @@ export default {
             type: 'warning'
           })
         })
+    },
+    HandleChange (currentIndex, lastIndex) {
+      this.$refs.imgCarousel.setActiveItem(currentIndex)
+      this.$refs.messageCarousel.setActiveItem(currentIndex)
     }
   }
 }
@@ -343,6 +374,7 @@ export default {
 .overview-map-card{
   grid-area: map;
 }
+
 .overview-message-card{
   grid-area: message;
 }
@@ -362,11 +394,20 @@ export default {
 .el-card {
   display: grid;
 }
+.el-card span {
+  margin: 5px;
+}
 .el-card__body {
   align-self: stretch;
 }
 .el-card__body div{
   height: 100%;
   width: 100%;
+}
+.overview-message-card .el-carousel .is-active{
+  background: rgba(249, 246, 142, 0.82);
+}
+.el-carousel__item {
+  margin-top: 5px;
 }
 </style>

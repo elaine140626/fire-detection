@@ -10,8 +10,8 @@ def messages(request: wsgi.WSGIRequest):
     response = HttpResponse()
     if request.method == "GET":
         user_name = session.get_user_name(request)
-        offset = request.GET.get('offset', 0)
-        limit = request.GET.get('limit', - 1)
+        offset = int(request.GET.get('offset', 0))
+        limit = int(request.GET.get('limit', - 1))
         the_type = request.GET.get('type', 'all')
         response.status_code = 200
         if the_type == 'all':
