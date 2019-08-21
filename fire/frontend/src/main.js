@@ -11,6 +11,8 @@ import '../static/css/style.css'
 
 Vue.use(ElementUI)
 Vue.prototype.$axios = axios
+Vue.prototype.urlHead = 'http://127.0.0.1:8000'
+// Vue.prototype.urlHead = ''
 
 Vue.config.productionTip = false
 

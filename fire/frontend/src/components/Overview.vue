@@ -29,7 +29,16 @@
     <el-card class="overview-amount-card" slot="header">
       <span>装置数量</span>
       <div id="amount-chart" class="flex-center">
-        <el-progress :percentage="messagePercentage" :format="messageFormat" status="warning" style="height:auto;"></el-progress>
+        <div style="display: block; align-items: center; height: auto;">
+          <div style="display: block; align-items: center; height: auto;">
+              <h4>未读消息: {{messageUnread}}</h4>
+            <el-progress :percentage="messageUnread" :format="MessageFormat"  color="red" style="height:auto;"></el-progress>
+          </div>
+          <div style="display: block; align-items: center; height: auto;">
+            <h4>设备在线: {{deviceOnline}}</h4>
+            <el-progress :percentage="devicePercentage"  color="green" style="height:auto;"></el-progress>
+          </div>
+        </div>
       </div>
     </el-card>
     <el-card class="overview-wheather-card" slot="header">
@@ -87,8 +96,6 @@ export default {
       drawer: false,
       device: [],
       messages: [{'id': 1, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428914.6071951.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 2, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428914.6071951.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 3, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428915.6183162.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 4, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428921.801521.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 5, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428922.8135169.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 6, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 7, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428923.8265727.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 8, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428924.8973463.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 9, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428925.974638.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 10, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428928.0553596.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}],
-      urlHead: 'http://127.0.0.1:8000',
-      // urlHead: '',
       deviceOnShow: {
         'serial_number': undefined,
         'hint': undefined,
@@ -98,8 +105,10 @@ export default {
       },
       videoOnShow: '',
       autoPlay: true,
-      messagePercentage: 100,
-      devicePercentage: 100
+      messageUnread: 0,
+      messageAmount: 0,
+      deviceOnline: 0,
+      deviceAmount: 0
     }
   },
   mounted: function () {
@@ -306,7 +315,11 @@ export default {
     this.GetMessages()
   },
   methods: {
-    ResizeChart () {
+    /**
+     * @return {string}
+     */
+    MessageFormat (percentage) {
+      return percentage === 0 ? '无' : `${percentage}%`
     },
     ShowVideo (videoUrl) {
       this.drawer = true
@@ -325,7 +338,7 @@ export default {
       thePlayer.play()
     },
     GetMessages () {
-      this.$axios.get(this.urlHead + '/api/messages/?limit=10&type=all', {withCredentials: true})
+      this.$axios.get(this.urlHead + '/api/messages/?limit=10&type=all', {withcredentials: true})
         .then((e) => {
           console.log(e.data)
           if (e.data.code === 0) {
@@ -348,6 +361,14 @@ export default {
     HandleChange (currentIndex, lastIndex) {
       this.$refs.imgCarousel.setActiveItem(currentIndex)
       this.$refs.messageCarousel.setActiveItem(currentIndex)
+    }
+  },
+  computed: {
+    devicePercentage: function () {
+      return this.deviceAmount === 0 ? 0 : Math.ceil(this.deviceOnline * 100 / this.deviceAmount)
+    },
+    messagePercentage: function () {
+      return this.messageAmount === 0 ? 0 : Math.ceil(this.messageUnread * 100 / this.messageAmount)
     }
   }
 }
@@ -388,7 +409,7 @@ export default {
   grid-area: img;
 }
 .overview-main .el-card {
-  background-color: rgba(255, 255, 255, .4);
+  background-color: rgba(255, 255, 255, .6);
   border: 0;
 }
 .el-card {

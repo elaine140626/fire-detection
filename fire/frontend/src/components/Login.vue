@@ -28,9 +28,10 @@ export default {
   },
   methods: {
     OnLogin () {
-      this.$axios.post('/api/user/login/', {
+      this.$axios.post(this.urlHead + '/api/user/login/', {
         username: this.user,
-        password: this.password
+        password: this.password,
+        withcredential: true
       })
         .then((e) => {
           console.log(e)
