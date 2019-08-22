@@ -32,7 +32,7 @@
         <div style="display: block; align-items: center; height: auto;">
           <div style="display: block; align-items: center; height: auto;">
               <h4>未读消息: {{messageUnread}}</h4>
-            <el-progress :percentage="messageUnread" :format="MessageFormat"  color="red" style="height:auto;"></el-progress>
+            <el-progress :percentage="messagePercentage" :format="MessageFormat"  color="red" style="height:auto;"></el-progress>
           </div>
           <div style="display: block; align-items: center; height: auto;">
             <h4>设备在线: {{deviceOnline}}</h4>
@@ -287,6 +287,8 @@ export default {
       .then((e) => {
         this.device = e.data.data
         console.log(e)
+        this.deviceAmount = this.device.length
+        this.deviceOnline = this.device.length
         for (let i = 0; i < this.device.length; i++) {
           let thePoint = new BMap.Point(this.device[i]['location_x'], this.device[i]['location_y'])
           let theMarker = new BMap.Marker(thePoint)

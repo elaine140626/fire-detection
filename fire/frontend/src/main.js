@@ -18,9 +18,7 @@ Vue.prototype.urlHead = 'http://127.0.0.1:8000'
 router.beforeEach((to, from, next) => {
   console.log(from.name)
   console.log(to.name)
-  axios.get(Vue.prototype.urlHead + '/api/user/check_login/', {
-    withCredentials: true
-  })
+  axios.get(Vue.prototype.urlHead + '/api/user/check_login/')
     .then((e) => {
       if (e.data.code === 0) {
         if (to.name === 'Login') {

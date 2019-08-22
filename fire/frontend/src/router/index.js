@@ -4,6 +4,7 @@ import Login from '@/components/Login'
 import HelloWorld from '../components/HelloWorld'
 import Overview from '../components/Overview'
 import Monitor from '../components/Monitor'
+import Warning from '../components/Warning'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/overview',
       name: 'Overview',
       component: Overview
+    },
+    {
+      path: '/warning',
+      name: 'Warning',
+      component: Warning
     }
   ]
 })
