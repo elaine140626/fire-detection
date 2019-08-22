@@ -31,6 +31,9 @@ export default {
       this.$axios.post(this.urlHead + '/api/user/login/', {
         username: this.user,
         password: this.password
+      },
+      {
+        withCredentials: true
       })
         .then((e) => {
           console.log(e)
