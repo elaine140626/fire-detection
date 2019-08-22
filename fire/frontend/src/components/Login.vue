@@ -59,6 +59,7 @@ export default {
 <style scoped>
 .el-input{
   width: 400px;
+  max-width: 80%;
 }
 .el-card {
   background: rgba(255, 255, 255, .9);

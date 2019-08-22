@@ -67,8 +67,8 @@
         <el-carousel-item v-for="message in messages" :key="message.id" class="flex-center">
           <el-image
             :src="message.img_url"
-            style="height: 80%;"
-            fit="contain"></el-image>
+            style="max-height: 80%;"
+            fit="cover"></el-image>
         </el-carousel-item>
       </el-carousel>
     </el-card>
@@ -271,10 +271,6 @@ export default {
       voltageChart.resize()
       installChart.resize()
       sensorChart.resize()
-
-      // var mapScipt = document.createElement('script')
-      // mapScipt.src = 'http://api.map.baidu.com/api?v=3.0&ak=QsGnMSGuvCa3B680i1DHAL3cDG8COE3e'
-      // document.body.appendChild(mapScipt)
     }
     this.$refs['popover-message'].doClose()
     var map = new BMap.Map('map-chart')
@@ -420,6 +416,7 @@ export default {
 }
 .el-card__body {
   align-self: stretch;
+  max-height: 100%;
 }
 .el-card__body div{
   height: 100%;
@@ -430,5 +427,50 @@ export default {
 }
 .el-carousel__item {
   margin-top: 5px;
+}
+@media screen and (max-width: 1200px) {
+  .overview-main {
+    position: relative;
+    top: 0;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    grid-template-areas:
+      "message img voltage"
+      "map map map"
+      "amount wheather install";
+    overflow-y: auto;
+  }
+  .overview-main .el-card {
+    height: 50vh;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .overview-main {
+    position: relative;
+    top: 0;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(4,1fr);
+    grid-template-areas:
+      "message img"
+      "map map"
+      "voltage install"
+      "amount wheather";
+  }
+}
+@media screen and (max-width: 768px) {
+  .overview-main {
+    position: relative;
+    top: 0;
+    grid-template-columns: repeat(1,1fr);
+    grid-template-rows: repeat(7,1fr);
+    grid-template-areas:
+      "message"
+      "img"
+      "map"
+      "voltage"
+      "install"
+      "amount"
+      "wheather";
+  }
 }
 </style>

@@ -46,17 +46,17 @@
     </el-row>
     <el-row>
       <el-col class="hidden-md-and-up" :span="2">
-        <el-dropdown trigger="click" class="el-dropdown-link">
+        <el-dropdown trigger="click" class="el-dropdown-link" @command="routeTo">
           <el-button>
             <i class="el-icon-menu"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-info" command="f" @click="routeTo('overview')">系统总览</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-video-camera" @click="routeTo('monitor')">监控可视化</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit-outline" @click="routeTo('warning')">告警分析</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-info" command="overview">系统总览</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-video-camera" command="monitor">监控可视化</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-edit-outline" command="warning">告警分析</el-dropdown-item>
             <el-dropdown-item icon="el-icon-notebook-1">日志管理</el-dropdown-item>
             <el-dropdown-item icon="el-icon-connection">推送系统</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-setting" @click="routeTo('config')">系统配置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" command="conf">系统配置</el-dropdown-item>
             <el-dropdown-item icon="el-icon-switch-button">退出系统</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
