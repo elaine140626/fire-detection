@@ -52,7 +52,7 @@ def get_message_info_controller(request: wsgi.WSGIRequest):
         user_name = session.get_user_name(request)
         utils.serve_data_response(response, {
             "total": len(get_all_messages()),
-            "unread": len(get_all_messages_by_user_name(user_name))
+            "unread": len(get_messages_unread_by_user_name(user_name))
         })
     else:
         response.status_code = 400
