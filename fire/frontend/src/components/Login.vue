@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card style="max-width: 90%;">
     <h2>登录</h2>
     <el-form label-position="left">
       <el-form-item label="用户名">
@@ -30,8 +30,7 @@ export default {
     OnLogin () {
       this.$axios.post(this.urlHead + '/api/user/login/', {
         username: this.user,
-        password: this.password,
-        withcredential: true
+        password: this.password
       })
         .then((e) => {
           console.log(e)
@@ -59,7 +58,7 @@ export default {
 <style scoped>
 .el-input{
   width: 400px;
-  max-width: 80%;
+  max-width: 100%;
 }
 .el-card {
   background: rgba(255, 255, 255, .9);

@@ -63,8 +63,8 @@
     </el-card>
     <el-card class="overview-img-card">
       <span>预警图片</span>
-      <el-carousel @change="HandleChange" :autoplay="autoPlay" ref="imgCarousel">
-        <el-carousel-item v-for="message in messages" :key="message.id" class="flex-center">
+      <el-carousel @change="HandleChange" :autoplay="autoPlay" ref="imgCarousel" style="align-items: center">
+        <el-carousel-item v-for="message in messages" :key="message.id" class="flex-cente r">
           <el-image
             :src="message.img_url"
             style="max-height: 80%;"
@@ -309,6 +309,7 @@ export default {
         }
       })
     this.GetMessages()
+    this.GetMessageInfo()
   },
   methods: {
     /**
@@ -333,8 +334,29 @@ export default {
       let thePlayer = new EZUIPlayer('myPlayer')
       thePlayer.play()
     },
+    GetMessageInfo () {
+      this.$axios.get(this.urlHead + '/api/messages/info/')
+        .then((e) => {
+          if (e.data.code === 0) {
+            this.messageAmount = e.data.data.total
+            this.messageUnread = e.data.data.unread
+          } else {
+            this.$notify({
+              message: e.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+          this.$notify({
+            message: '获取报警信息详情失败',
+            type: 'warning'
+          })
+        })
+    },
     GetMessages () {
-      this.$axios.get(this.urlHead + '/api/messages/?limit=10&type=all', {withcredentials: true})
+      this.$axios.get(this.urlHead + '/api/messages/?limit=10&type=all')
         .then((e) => {
           console.log(e.data)
           if (e.data.code === 0) {
@@ -407,6 +429,7 @@ export default {
 .overview-main .el-card {
   background-color: rgba(255, 255, 255, .6);
   border: 0;
+  min-height: 300px;
 }
 .el-card {
   display: grid;
