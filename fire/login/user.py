@@ -1,22 +1,25 @@
 import login.models as models
 from login import session
+from login import utils
 import json
 from django.http import HttpResponse
 from django.core.handlers import wsgi
 
 
-def check_is_login_and_get_username(request):
+def check_is_login_and_get_username_controller(request):
     response = HttpResponse()
     if session.check_is_login(request):
         response.status_code = 200
-        response.content = request.session['name']
+        user_name = session.get_user_name(request)
+        print(user_name)
+        utils.serve_data_response(response, user_name)
     else:
         response.status_code = 400
         response.content = 'Not login'
     return response
 
 
-def login(request: wsgi.WSGIRequest):
+def login_controller(request: wsgi.WSGIRequest):
     response = HttpResponse()
 
     if session.check_is_login(request):

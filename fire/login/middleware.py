@@ -14,7 +14,7 @@ class LoginFilter(MiddlewareMixin):
         next_url = request.path_info
         print(next_url[0: len(self.api_prefix)])
         print(request.get_host())
-        if next_url[0: len(self.api_prefix)] == self.api_prefix and request.get_host() != "127.0.0.1:8000":
+        if next_url[0: len(self.api_prefix)] == self.api_prefix and request.get_host() != "127.0.0.1:8001":
             print(next_url[0: len(self.login_api)])
             print(next_url)
             if next_url[0: len(self.login_api)] == self.login_api:

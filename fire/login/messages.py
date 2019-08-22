@@ -1,5 +1,5 @@
 from login import session, models, utils, status_code
-from login import user as User
+from login import user as user_model
 from django.core.handlers import wsgi
 from django.http import HttpResponse
 from django import db
@@ -50,7 +50,7 @@ def get_message_info_controller(request: wsgi.WSGIRequest):
 
     if request.method == "GET":
         user_name = session.get_user_name(request)
-        response.content = json.dumps({
+        utils.serve_data_response(response, {
             "total": len(get_all_messages()),
             "unread": len(get_all_messages_by_user_name(user_name))
         })
@@ -74,7 +74,7 @@ def approve_message(request: wsgi.WSGIRequest):
         approve_status = params.get('approve_status')
         if message_ids is not None and approve_status is not None and not isinstance(approve_status, bool):
             user_name = session.get_user_name(request)
-            user = User.get_user_by_user_name(user_name)
+            user = user_model.get_user_by_user_name(user_name)
             for message_id in message_ids:
                 if models.User_Message.objects.filter(user_id=user.id, message_id=message_id).exists():
                     models.User_Message.objects.filter(user_id=user.id, message_id=message_id).update(
@@ -97,7 +97,7 @@ def get_all_messages(limit=-1, offset=0) -> []:
 
 def get_messages_unread_by_user_name(user_name: str, limit: int = - 1, offset: int = 0) -> []:
     # return the message unread by the user
-    user = User.get_user_by_user_name(user_name)
+    user = user_model.get_user_by_user_name(user_name)
     user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
     user_message_list = [i['message_id'] for i in user_message]
     if limit == -1:
@@ -119,7 +119,7 @@ def get_messages_unread_by_user_name(user_name: str, limit: int = - 1, offset: i
 
 
 def get_all_messages_by_user_name(user_name: str, limit: int = -1, offset: int = 0) -> []:
-    user = User.get_user_by_user_name(user_name)
+    user = user_model.get_user_by_user_name(user_name)
     user_message = models.User_Message.objects.values('message_id').filter(user_id=user.id)
     user_message_dic = {}
     for i in user_message:

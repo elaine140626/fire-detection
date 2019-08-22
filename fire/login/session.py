@@ -15,6 +15,7 @@ def flush_session(request):
 
 
 def set_session(request: wsgi.WSGIRequest, is_login: bool, user_name: str, user_id: int):
+    print("This is set_session")
     request.session['is_login'] = is_login
     request.session['user_name'] = user_name
     request.session['user_id'] = user_id
