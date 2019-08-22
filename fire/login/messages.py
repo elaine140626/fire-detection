@@ -45,6 +45,22 @@ def messages(request: wsgi.WSGIRequest):
     return response
 
 
+def get_message_info_controller(request: wsgi.WSGIRequest):
+    response = HttpResponse()
+
+    if request.method == "GET":
+        user_name = session.get_user_name(request)
+        response.content = json.dumps({
+            "total": len(get_all_messages()),
+            "unread": len(get_all_messages_by_user_name(user_name))
+        })
+    else:
+        response.status_code = 400
+        response.content = 'wrong http method'
+
+    return response
+
+
 def approve_message(request: wsgi.WSGIRequest):
     response = HttpResponse()
 
