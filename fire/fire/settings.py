@@ -124,7 +124,6 @@ CORS_ORIGIN_WHITELIST = (
     'http://api.map.baidu.com'
 )
 
-CORS_ALLOW_CREDENTIALS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
