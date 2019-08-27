@@ -1,9 +1,12 @@
 /**
  * jssdk 2.4
  */
-var EZUIPlayer = (function (global, factory) {
+(function (global, factory) {
 
   "use strict";
+  console.log("i'm here")
+  console.log("This is in ezuikit module.export is",module.exports);
+  console.log(global.document)
 
   if (typeof module === "object" && typeof module.exports === "object") {
     module.exports = global.document ?
@@ -15,14 +18,15 @@ var EZUIPlayer = (function (global, factory) {
         return factory(w);
       };
   } else {
+    console.log(factory)
+    console.log('this is global', global)
     factory(global);
   }
 
   // Pass this if window is not defined yet
 })(typeof window !== "undefined" ? window : this, function (window, noGlobal) {
 
-  /**
-   * @preserve HTML5 Shiv 3.7.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
+  /*typeof module @preserve HTML5 Shiv 3.7.3 | @afarkas @jdalton @jon_neal @rem | MIT/GPL2 Licensed
    */
   !function (a, b) { function c(a, b) { var c = a.createElement("p"), d = a.getElementsByTagName("head")[0] || a.documentElement; return c.innerHTML = "x<style>" + b + "</style>", d.insertBefore(c.lastChild, d.firstChild) } function d() { var a = t.elements; return "string" == typeof a ? a.split(" ") : a } function e(a, b) { var c = t.elements; "string" != typeof c && (c = c.join(" ")), "string" != typeof a && (a = a.join(" ")), t.elements = c + " " + a, j(b) } function f(a) { var b = s[a[q]]; return b || (b = {}, r++ , a[q] = r, s[r] = b), b } function g(a, c, d) { if (c || (c = b), l) return c.createElement(a); d || (d = f(c)); var e; return e = d.cache[a] ? d.cache[a].cloneNode() : p.test(a) ? (d.cache[a] = d.createElem(a)).cloneNode() : d.createElem(a), !e.canHaveChildren || o.test(a) || e.tagUrn ? e : d.frag.appendChild(e) } function h(a, c) { if (a || (a = b), l) return a.createDocumentFragment(); c = c || f(a); for (var e = c.frag.cloneNode(), g = 0, h = d(), i = h.length; i > g; g++)e.createElement(h[g]); return e } function i(a, b) { b.cache || (b.cache = {}, b.createElem = a.createElement, b.createFrag = a.createDocumentFragment, b.frag = b.createFrag()), a.createElement = function (c) { return t.shivMethods ? g(c, a, b) : b.createElem(c) }, a.createDocumentFragment = Function("h,f", "return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&(" + d().join().replace(/[\w\-:]+/g, function (a) { return b.createElem(a), b.frag.createElement(a), 'c("' + a + '")' }) + ");return n}")(t, b.frag) } function j(a) { a || (a = b); var d = f(a); return !t.shivCSS || k || d.hasCSS || (d.hasCSS = !!c(a, "article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")), l || i(a, d), a } var k, l, m = "3.7.3", n = a.html5 || {}, o = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i, p = /^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i, q = "_html5shiv", r = 0, s = {}; !function () { try { var a = b.createElement("a"); a.innerHTML = "<xyz></xyz>", k = "hidden" in a, l = 1 == a.childNodes.length || function () { b.createElement("a"); var a = b.createDocumentFragment(); return "undefined" == typeof a.cloneNode || "undefined" == typeof a.createDocumentFragment || "undefined" == typeof a.createElement }() } catch (c) { k = !0, l = !0 } }(); var t = { elements: n.elements || "abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output picture progress section summary template time video", version: m, shivCSS: n.shivCSS !== !1, supportsUnknownElements: l, shivMethods: n.shivMethods !== !1, type: "default", shivDocument: j, createElement: g, createDocumentFragment: h, addElements: e }; a.html5 = t, j(b), "object" == typeof module && module.exports && (module.exports = t) }("undefined" != typeof window ? window : this, document);
 
@@ -213,14 +217,14 @@ var EZUIPlayer = (function (global, factory) {
             })
           }
         })
-        .catch(function(err){
-          var initDecoder = _this.initDecoder(playParams);
-          if (isPromise(initDecoder) && (playParams.autoplay !== false)) {
-            initDecoder.then(function () {
-             // _this.play({ handleError: playParams.handleError });
-            })
-          }
-        });
+          .catch(function(err){
+            var initDecoder = _this.initDecoder(playParams);
+            if (isPromise(initDecoder) && (playParams.autoplay !== false)) {
+              initDecoder.then(function () {
+                // _this.play({ handleError: playParams.handleError });
+              })
+            }
+          });
       }
     } else {
       var elementID = '';
@@ -435,12 +439,12 @@ var EZUIPlayer = (function (global, factory) {
         promiseTaskList.push(promiseTaskFun(item));
       });
       var getRealUrlPromiseObj = Promise.all(promiseTaskList)
-      .then(function (result) {
-        _this.opt.sources = result;
-        _this.opt.currentSource = result[0];
-      })
-      .catch(function(err){
-      })
+        .then(function (result) {
+          _this.opt.sources = result;
+          _this.opt.currentSource = result[0];
+        })
+        .catch(function(err){
+        })
       return getRealUrlPromiseObj;
     } else {
       if (!this.opt.currentSource) {
@@ -860,10 +864,10 @@ var EZUIPlayer = (function (global, factory) {
         url: this.opt.currentSource,
         isLive: true,
       }, {
-          enableStashBuffer: true,
-          stashInitialSize: 128,
-          enableWorker: true
-        });
+        enableStashBuffer: true,
+        stashInitialSize: 128,
+        enableWorker: true
+      });
 
       flvPlayer.attachMediaElement(player);
       flvPlayer.load();
@@ -961,7 +965,7 @@ var EZUIPlayer = (function (global, factory) {
           iCurrentSplit: playParams.splitBasis || Math.ceil(Math.sqrt(playParams.url.split(",").length)),
           szBasePath: playParams.decoderPath + '/js/',
         });
-          // 注册全屏事件
+        // 注册全屏事件
         window.onresize = function () {
           _this.jSPlugin.JS_Resize(playParams.width || 600, playParams.height || 400);
         }
@@ -1365,28 +1369,28 @@ var EZUIPlayer = (function (global, factory) {
           };
 
         }).catch(function (error) {
-          var msg;
-          switch (error.code || error.name) {
-            case 'PermissionDeniedError':
-            case 'PERMISSION_DENIED':
-            case 'NotAllowedError':
-              msg = '用户拒绝访问麦克风';
-              break;
-            case 'NOT_SUPPORTED_ERROR':
-            case 'NotSupportedError':
-              msg = '浏览器不支持麦克风';
-              break;
-            case 'MANDATORY_UNSATISFIED_ERROR':
-            case 'MandatoryUnsatisfiedError':
-              msg = '找不到麦克风设备';
-              break;
-            default:
-              msg = '无法打开麦克风，异常信息:' + (error.code || error.name);
-              break;
-          }
-          _this.log(msg);
-          alert(msg);
-        })
+        var msg;
+        switch (error.code || error.name) {
+          case 'PermissionDeniedError':
+          case 'PERMISSION_DENIED':
+          case 'NotAllowedError':
+            msg = '用户拒绝访问麦克风';
+            break;
+          case 'NOT_SUPPORTED_ERROR':
+          case 'NotSupportedError':
+            msg = '浏览器不支持麦克风';
+            break;
+          case 'MANDATORY_UNSATISFIED_ERROR':
+          case 'MandatoryUnsatisfiedError':
+            msg = '找不到麦克风设备';
+            break;
+          default:
+            msg = '无法打开麦克风，异常信息:' + (error.code || error.name);
+            break;
+        }
+        _this.log(msg);
+        alert(msg);
+      })
     }
   };
 
@@ -1430,4 +1434,3 @@ var EZUIPlayer = (function (global, factory) {
   }
   return EZUIKit;
 });
-
