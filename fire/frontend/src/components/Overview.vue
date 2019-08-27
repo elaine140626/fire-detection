@@ -80,13 +80,14 @@
       :destroy-on-close="true"
       @opened="InitVideo"
       direction="btt">
-      <div id="myPlayer" controls  playsInline webkit-playsinline>
-      </div>
+      <video id="myPlayer" controls  playsInline webkit-playsinline>
+      </video>
     </el-drawer>
   </div>
 </template>
 
 <script>
+import EZUIKit from '../../libs/ezuikit.js'
 import BMap from 'BMap'
 var echarts = require('echarts')
 export default {
@@ -327,14 +328,17 @@ export default {
     InitVideo () {
       var myPlayer = document.getElementById('myPlayer')
       var source = document.createElement('source')
+      var drawBody = document.getElementsByClassName('el-drawer__body')[0]
       source.setAttribute('src', this.videoOnShow)
       myPlayer.appendChild(source)
 
-      // eslint-disable-next-line no-undef
-      console.log(EZUIPlayer)
-      // eslint-disable-next-line no-undef
-      let thePlayer = new EZUIPlayer('myPlayer')
+      let thePlayer = new EZUIKit.EZUIPlayer('myPlayer')
+      console.log('im here')
       thePlayer.play()
+      console.log(thePlayer)
+      console.log(this.$refs.videoDrawer)
+      thePlayer.opt.height = drawBody.clientHeight
+      thePlayer.opt.width = drawBody.clientWidth
     },
     GetMessageInfo () {
       this.$axios.get(this.urlHead + '/api/messages/info/')

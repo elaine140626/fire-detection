@@ -8,12 +8,13 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import '../static/css/style.css'
+import '../libs/ezuikit.js'
 
 Vue.use(ElementUI)
 Vue.prototype.$axios = axios
 Vue.prototype.$axios.defaults.withCredentials = true
-// Vue.prototype.urlHead = 'http://127.0.0.1:8000'
-Vue.prototype.urlHead = ''
+Vue.prototype.urlHead = 'http://127.0.0.1:8000'
+// Vue.prototype.urlHead = ''
 
 router.beforeEach((to, from, next) => {
   console.log(from.name)

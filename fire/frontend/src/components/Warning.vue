@@ -1,12 +1,16 @@
 <template>
 <div class="warning-main">
-<el-card class="warning-table-container" body-style="{height:'80%'}">
+<el-card class="warning-table-container" body-style="{height:'80%'}" v-loading.fullscreen.lock="isLoading">
   <el-table
     :data="messageDisplayed"
+    ref="multipleTable"
     style="width: 100%; height: 100%;"
     max-height="95%"
     :cell-style="cellStyle"
+    @cell-click="handleCellClick"
+    @selection-change="handleSelectionChange"
     >
+    <el-table-column type="selection" width="55"></el-table-column>
     <el-table-column prop="c_time" align="center" header-align="center" width="370">
       <template slot="header" slot-scope="scope">
         <el-date-picker
@@ -57,6 +61,36 @@
       </template>
     </el-table-column>
   </el-table>
+  <el-row>
+    <el-col align="middle">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        v-bind:current-page="currentPage"
+        :total="filterMessage.length"
+        :page-size="messagePerPage"
+        @current-change="handleCurrentChange"
+        @prev-click="handleCurrentChange"
+        @next-click="handleCurrentChange"
+        ></el-pagination>
+    </el-col>
+    <el-col align="right">
+      <el-button
+        type="success"
+        :disabled="messagesSelected.length === 0"
+        @click="handleProve(true)"
+      >
+        预警正确
+      </el-button>
+      <el-button
+        type="danger"
+        :disabled="messagesSelected.length === 0"
+        @click="handleProve(false)"
+      >
+        预警错误
+      </el-button>
+    </el-col>
+  </el-row>
 </el-card>
 </div>
 </template>
@@ -68,17 +102,64 @@ export default {
     return {
       currentPage: 1,
       messagePerPage: 10,
-      messages: [{'id': 1, 'content': '这是一条告警信息', 'img_url': 'http://a.hiphotos.baidu.com/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 2, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428914.6071951.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 3, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428915.6183162.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 4, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428921.801521.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 5, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428922.8135169.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': true, 'c_time': '2019-06-26'}, {'id': 6, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 7, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428923.8265727.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 8, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428924.8973463.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 9, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428925.974638.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}, {'id': 10, 'content': '这是一条告警信息', 'img_url': 'http://188.131.241.21/static/untrack/1558428928.0553596.jpg', 'device_number': 1, 'device_hint': 'n3', 'deal': false, 'c_time': '2019-06-26'}],
-      devices: [{'id': 1, 'serial_number': 'C02411653', 'location_x': 120.697792, 'location_y': 36.369133, 'hint': 'n3', 'video_url': 'rtmp://rtmp01open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b'}],
+      messages: [],
+      messagesSelected: [],
+      devices: [],
       dateRange: '',
       selectDeviceId: '',
       approvalStatus: '',
       cellStyle: {
         justifyItems: 'center'
-      }
+      },
+      isLoading: true
     }
   },
-  method: {
+  methods: {
+    handleCurrentChange (currentChange) {
+      console.log('This is current change')
+      this.currentPage = currentChange
+    },
+    handleSelectionChange (selections) {
+      this.messagesSelected = selections
+    },
+    handleCellClick (row) {
+      this.$refs.multipleTable.toggleRowSelection(row)
+    },
+    handleProve (status) {
+      let messageIds = []
+      for (let i = 0; i < this.messagesSelected.length; i++) {
+        messageIds.push(this.messagesSelected[i].id)
+      }
+      this.$axios.post(this.urlHead + '/api/messages/approve',
+        {
+          'params': {
+            'message_ids': messageIds,
+            'approve_status': status
+          }
+        })
+        .then((e) => {
+          if (e.data.code === 0) {
+            this.$notify({
+              message: '审核成功',
+              type: 'success'
+            })
+            this.messagesSelected.forEach(message => {
+              message.deal = true
+            })
+          } else {
+            this.$notify({
+              message: '审核失败' + e.data.msg,
+              type: 'danger'
+            })
+          }
+        })
+        .catch(() => {
+          this.$notify({
+            message: '请求错误',
+            type: 'danger'
+          })
+        })
+    }
   },
   computed: {
     filterMessage () {
@@ -99,6 +180,32 @@ export default {
     pageNumber () {
       return Math.ceil(this.filterMessage.length / this.messagePerPage)
     }
+  },
+  mounted () {
+    this.$axios.get(this.urlHead + '/api/messages/')
+      .then((e) => {
+        this.isLoading = false
+        this.messages = e.data.data
+      })
+      .catch((e) => {
+        this.isLoading = false
+        this.$notify({
+          message: '获取数据失败: \n ' + e.data.msg,
+          type: 'danger'
+        })
+      })
+    this.$axios.get(this.urlHead + '/api/devices/all')
+      .then((e) => {
+        this.isLoading = false
+        this.devices = e.data.data
+      })
+      .catch((e) => {
+        this.isLoading = false
+        this.$notify({
+          message: '获取设备列表失败 \n ' + e.data.msg,
+          type: 'danger'
+        })
+      })
   }
 }
 </script>
