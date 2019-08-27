@@ -26,6 +26,7 @@ user_patterns = [
 message_patterns = [
     path('', messages.messages),
     path('info/', messages.get_message_info_controller),
+    path('approve', messages.approve_message_controller),
 ]
 
 device_patterns = [
