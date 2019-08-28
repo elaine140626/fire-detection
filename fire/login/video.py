@@ -1,4 +1,5 @@
 from login import models, status_code, session, utils
+from login import user as User
 from django.core.handlers import wsgi
 from django.http import HttpResponse
 import json
@@ -9,7 +10,8 @@ def videos_controller(request: wsgi.WSGIRequest):
 
     if request.method == 'GET':
         user_name = session.get_user_name(request)
-        videos = models.Video.objects.filter(user_name=user_name)
+        user = User.get_user_by_user_name(user_name)
+        videos = models.Video.objects.filter(user_id=user.id)
         ret = []
         for video in videos:
             ret.append(convert_video_model_to_dict(video))

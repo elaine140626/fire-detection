@@ -41,7 +41,8 @@ video_patterns = [
 api_patterns = [
     path('user/', include(user_patterns)),
     path('messages/', include(message_patterns)),
-    path('devices/', include(device_patterns))
+    path('devices/', include(device_patterns)),
+    path('videos/', include(video_patterns)),
 ]
 urlpatterns = [
     path('admin/', admin.site.urls),
