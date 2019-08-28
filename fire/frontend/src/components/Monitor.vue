@@ -1,30 +1,92 @@
 <template>
     <div style="height: 100%; width: 100%;">
-      <el-row>
+      <el-row style="height: 100%;">
         <el-col :span="4">
-          <video id="myPlayer" ref='video' controls playsinline webkit-playsinline autoplay height="300" width="300"
-                 src="rtmp://rtmp01open.ys7.com/openlive/dcc39c775b5945028a69b4b6953f4369">
-          </video>
+          <el-table
+            :data="videos"
+            ref="multipleTable"
+            style="width: 100%; height: 100%;"
+            max-height="95%"
+            @selection-change="handleSelectionChange"
+          >
+            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column label="视频" header-align="center">
+              <template slot-scope="scope">
+                视频 {{scope.row.id}}
+              </template>
+            </el-table-column>
+          </el-table>
         </el-col>
-        <el-col :span="20">
-          2
+        <el-col :span="20" style="height: 100%;">
+          <div style="height: 100%; margin-left: 5px" id="videoContainer">
+            <div style="padding: 7px;
+            background: #ffffff; -webkit-border-radius: 3px;-moz-border-radius: 3px;
+            border-radius: 3px;
+            display: grid; grid-template-columns: 1fr 1fr;"
+            >
+              <div style="display: flex; align-items: center; justify-content: flex-start; padding-left: 4px">iLearn</div>
+              <div style="display: flex; align-items: center; justify-content: flex-end">
+                <div>
+                  <el-button>1xN</el-button>
+                  <el-button>2xN</el-button>
+                </div>
+              </div>
+            </div>
+            <div :class="'grid-' + this.layout">
+              <rtmp-player
+                v-for="video in videos"
+                :key="video.id"
+                :video="video"
+                :width="width"
+                :height="width"
+              >
+              </rtmp-player>
+            </div>
+          </div>
         </el-col>
       </el-row>
     </div>
 </template>
 
 <script>
-import EZUIKit from '../../libs/ezuikit.js'
+import RtmpPlayer from './Video'
 export default {
   name: 'Monitor',
+  components: {RtmpPlayer},
   data () {
     return {
-      videos: []
+      videos: [],
+      videosOnShow: [],
+      layout: 2,
+      padding: 20
+    }
+  },
+  methods: {
+    handleCellClick (row) {
+      this.$refs.multipleTable.toggleRowSelection(row)
+    },
+    handleSelectionChange (selections) {
+      this.videosOnShow = selections
     }
   },
   mounted () {
-    let player = new EZUIKit.EZUIPlayer('myPlayer')
-    console.log(player)
+    this.$axios.get(this.urlHead + '/api/videos/')
+      .then((e) => {
+        this.videos = e.data.data
+        this.videosOnShow = this.videos
+      })
+      .catch((e) => {
+        this.$notify({
+          message: '请求错误' + e,
+          type: 'danger'
+        })
+      })
+  },
+  computed: {
+    width () {
+      let videoContainer = document.getElementById('videoContainer')
+      return videoContainer.clientWidth / this.layout - this.layout * this.padding
+    }
   }
 }
 </script>
@@ -32,5 +94,31 @@ export default {
 <style scoped>
 .el-col {
   max-height: 100%;
+}
+.el-card {
+  justify-items: center;
+}
+.el-table {
+  background: rgba(255, 255, 255, .7);
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.grid-6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
 </style>
