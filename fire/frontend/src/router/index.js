@@ -5,6 +5,7 @@ import HelloWorld from '../components/HelloWorld'
 import Overview from '../components/Overview'
 import Monitor from '../components/Monitor'
 import Warning from '../components/Warning'
+import Conf from '../components/Conf'
 
 Vue.use(Router)
 
@@ -38,6 +39,15 @@ export default new Router({
       path: '/warning',
       name: 'Warning',
       component: Warning
+    },
+    {
+      path: '/config',
+      name: 'Conf',
+      component: Conf
+    },
+    {
+      path: '/*',
+      redirect: '/overview'
     }
   ]
 })
