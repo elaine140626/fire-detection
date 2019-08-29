@@ -8,6 +8,7 @@
             style="width: 100%; height: 100%;"
             max-height="95%"
             @selection-change="handleSelectionChange"
+            @cell-click="handleCellClick"
           >
             <el-table-column type="selection" width="55"></el-table-column>
             <el-table-column label="视频" header-align="center">
@@ -27,14 +28,16 @@
               <div style="display: flex; align-items: center; justify-content: flex-start; padding-left: 4px">iLearn</div>
               <div style="display: flex; align-items: center; justify-content: flex-end">
                 <div>
-                  <el-button>1xN</el-button>
-                  <el-button>2xN</el-button>
+                  <el-button @click="switchLayout(1)">1xN</el-button>
+                  <el-button @click="switchLayout(2)">2xN</el-button>
+                  <el-button @click="switchLayout(4)">4xN</el-button>
+                  <el-button @click="switchLayout(6)">6xN</el-button>
                 </div>
               </div>
             </div>
-            <div :class="'grid-' + this.layout">
+            <div :class="'grid-' + this.layout" id="theVideos" style="background: rgba(255,255,255,.6); -webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px; padding: 10px 5px; min-height: 70%;">
               <rtmp-player
-                v-for="video in videos"
+                v-for="video in videosOnShow"
                 :key="video.id"
                 :video="video"
                 :width="width"
@@ -58,15 +61,36 @@ export default {
       videos: [],
       videosOnShow: [],
       layout: 2,
-      padding: 20
+      padding: 10
     }
   },
   methods: {
     handleCellClick (row) {
       this.$refs.multipleTable.toggleRowSelection(row)
+      this.switchPlayerStatus()
     },
     handleSelectionChange (selections) {
       this.videosOnShow = selections
+      this.switchPlayerStatus()
+    },
+    switchPlayerStatus () {
+      let theVideos = document.getElementById('theVideos')
+      for (let i = 0; i < this.videos.length; i++) {
+        this.videos[i].onShow = false
+      }
+      for (let i = 0; i < this.videosOnShow.length; i++) {
+        this.videosOnShow[i].onShow = true
+      }
+      for (let i = 0; i < this.videos.length; i++) {
+        if (this.videos[i].onShow) {
+          theVideos.children[i].style.display = 'block'
+        } else {
+          theVideos.children[i].style.display = 'none'
+        }
+      }
+    },
+    switchLayout (newLayout) {
+      this.layout = newLayout
     }
   },
   mounted () {
@@ -74,6 +98,7 @@ export default {
       .then((e) => {
         this.videos = e.data.data
         this.videosOnShow = this.videos
+        this.$refs.multipleTable.toggleAllSelection()
       })
       .catch((e) => {
         this.$notify({
@@ -112,13 +137,19 @@ export default {
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-row-gap: 10px;
 }
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 10px;
 }
 .grid-6 {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  grid-row-gap: 10px;
+}
+.display-none {
+  display: none;
 }
 </style>
