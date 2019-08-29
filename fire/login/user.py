@@ -54,5 +54,23 @@ def login_controller(request: wsgi.WSGIRequest):
     return response
 
 
+def get_user_info_controller(request: wsgi.WSGIRequest) :
+    response = HttpResponse()
+    if request.method == 'GET' :
+        utils.serve_data_response(response, convert_user_model_to_dict(get_user_by_user_name(session.get_user_name(request))))
+    else:
+        response.status_code = 400
+
+    return response
+
+
 def get_user_by_user_name(user_name: str) -> models.User:
     return models.User.objects.get(name=user_name)
+
+def convert_user_model_to_dict(user: models.User) :
+    return {
+        'telephone': user.phone,
+        'email': user.email,
+        'wechatOpenId': user.wechat_id,
+        'layout': user.layout
+    }

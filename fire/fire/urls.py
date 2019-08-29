@@ -21,7 +21,8 @@ from login import user, messages, device, video
 
 user_patterns = [
     path('login/', user.login_controller),
-    path('check_login/', user.check_is_login_and_get_username_controller)
+    path('check_login/', user.check_is_login_and_get_username_controller),
+    path('info/', user.get_user_info_controller)
 ]
 message_patterns = [
     path('', messages.messages),
