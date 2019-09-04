@@ -125,25 +125,5 @@ export default {
   }
 }
 </script>
-
-<style>
-.el-collapse-item__header {
-  background: transparent;
-}
-.el-collapse-item__wrap {
-  background: transparent;
-}
-.video-input {
-  width: 450px;
-}
-.el-form-item {
-  display: flex;
-  justify-content: flex-start;
-}
-.conf-form-button {
-  justify-content: center;
-}
-.conf-form-button .el-form-item__content {
-  margin-right: 100px;
-}
+<style scoped>
 </style>

@@ -43,7 +43,7 @@ export default {
             type: 'success',
             duration: 2500
           })
-          this.$router.push('test')
+          this.$router.push('overview')
         })
         .catch((e) => {
           this.$notify({
